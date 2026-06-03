@@ -12,7 +12,7 @@ screener:
 
   # ── Client-side filters (applied after data is fetched from IB) ──
   atr_min: 4.0                   # minimum ATR(14) in dollars
-  #price_min: 5.0                 # minimum stock price (filters penny stocks)
+  price_min: 2.0                 # minimum stock price (filters penny stocks)
   exclude_sectors:
     - "Health Care"
     # Uncomment to add more sector exclusions:
