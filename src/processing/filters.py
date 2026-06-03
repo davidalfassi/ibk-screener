@@ -48,6 +48,11 @@ def _reject_reason(rec: StockRecord, cfg: ScreenerConfig) -> str:
         if rec.sector and rec.sector in cfg.exclude_sectors:
             return f"sector '{rec.sector}' is excluded"
 
+    if cfg.pre_market_vol_min is not None:
+        vol = rec.pre_market_volume
+        if vol is None or vol < cfg.pre_market_vol_min:
+            return f"pre_market_volume {vol} < min {cfg.pre_market_vol_min}"
+
     return ""
 
 

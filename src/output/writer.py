@@ -76,8 +76,12 @@ def _sort_key(rec: StockRecord) -> float:
 
 # ── Writer ─────────────────────────────────────────────────────────────────────
 
-def write_output(records: List[StockRecord], config: OutputConfig) -> Path:
-    """Sort records by pre-market change %, format fields, and write YAML file."""
+def write_output(
+    records: List[StockRecord],
+    config: OutputConfig,
+    max_stocks: Optional[int] = None,
+) -> Path:
+    """Sort records by pre-market change %, cap to top N, format fields, and write YAML file."""
     output_dir = Path(config.directory)
     output_dir.mkdir(parents=True, exist_ok=True)
 
@@ -86,6 +90,8 @@ def write_output(records: List[StockRecord], config: OutputConfig) -> Path:
     filepath = output_dir / filename
 
     sorted_records = sorted(records, key=_sort_key, reverse=True)
+    if max_stocks is not None:
+        sorted_records = sorted_records[:max_stocks]
     payload = {"stocks": [_record_to_dict(r) for r in sorted_records]}
 
     with open(filepath, "w") as f:
