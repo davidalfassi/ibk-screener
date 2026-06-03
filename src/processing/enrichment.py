@@ -41,6 +41,7 @@ def build_records(
     for symbol, info in contract_infos.items():
         snap = snapshots.get(symbol)
         bars = bars_map.get(symbol, [])
+        # ATR is calculated as a percentage of the most recent close
         atr_val = calculate_atr(bars, atr_period) if bars else None
 
         records.append(StockRecord(

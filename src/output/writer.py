@@ -48,10 +48,10 @@ def _fmt_price(price: Optional[float]) -> Optional[float]:
     return round(price, 2)
 
 
-def _fmt_atr(atr: Optional[float]) -> Optional[float]:
+def _fmt_atr(atr: Optional[float]) -> Optional[str]:
     if atr is None:
         return None
-    return round(atr, 2)
+    return f"{atr:.2f}%"
 
 
 # ── Serialisation ──────────────────────────────────────────────────────────────

@@ -31,9 +31,9 @@ def apply_screener_filters(records: List[StockRecord], config: ScreenerConfig) -
 def _reject_reason(rec: StockRecord, cfg: ScreenerConfig) -> str:
     if cfg.atr_min is not None:
         if rec.atr is None:
-            return f"ATR unavailable (min required: {cfg.atr_min})"
+            return f"ATR unavailable (min required: {cfg.atr_min}%)"
         if rec.atr < cfg.atr_min:
-            return f"ATR {rec.atr:.2f} < min {cfg.atr_min}"
+            return f"ATR {rec.atr:.2f}% < min {cfg.atr_min}%"
 
     if cfg.price_min is not None:
         # Use pre-market price as fallback when prev-close tick hasn't arrived
@@ -62,8 +62,9 @@ def filter_symbols_by_atr(
     atr_min: float | None,
 ) -> List[str]:
     """
-    Quick pre-filter on ATR values before fetching market data snapshots.
+    Quick pre-filter on ATR percentage values before fetching market data snapshots.
     Saves API calls for symbols that won't pass the ATR threshold.
+    ATR values are expressed as percentages.
     """
     if atr_min is None:
         return symbols
@@ -72,7 +73,7 @@ def filter_symbols_by_atr(
     for sym in symbols:
         atr = atr_map.get(sym)
         if atr is None or atr < atr_min:
-            log.info("Pre-filtered %s: ATR=%s (min=%s)", sym, atr, atr_min)
+            log.info("Pre-filtered %s: ATR=%s%% (min=%s%%)", sym, atr, atr_min)
         else:
             passed.append(sym)
 
