@@ -1,0 +1,21 @@
+screener:
+  # IB scanner parameters
+  scan_code: "TOP_PERC_GAIN"     # Rank by pre-market % gainers
+  instrument: "STK"
+  location_code: "STK.US.MAJOR"  # NYSE + NASDAQ major stocks
+  number_of_rows: 50             # IB maximum is 50 per scan
+
+  # ── Server-side filters (applied by IB scanner before returning results) ──
+  market_cap_min_usd: 2000000000  # $2B minimum market cap
+  market_cap_max_usd: null        # no upper limit (null = disabled)
+  avg_volume_min: 1000000         # 1M shares minimum 10-day average volume
+
+  # ── Client-side filters (applied after data is fetched from IB) ──
+  atr_min: 4.0                   # minimum ATR(14) in dollars
+  price_min: 5.0                 # minimum stock price (filters penny stocks)
+  exclude_sectors:
+    - "Health Care"
+    # Uncomment to add more sector exclusions:
+    # - "Energy"
+    # - "Utilities"
+    # - "Consumer Defensive"

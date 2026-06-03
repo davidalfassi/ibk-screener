@@ -1,0 +1,15 @@
+watchlist:
+  # All securities (stocks and ETFs) use sec_type: "STK" on IB's SMART routing.
+  # Exchange and currency default to SMART / USD if omitted.
+  - symbol: "AAPL"
+    sec_type: "STK"
+  - symbol: "MSFT"
+    sec_type: "STK"
+  - symbol: "NVDA"
+    sec_type: "STK"
+  - symbol: "TSLA"
+    sec_type: "STK"
+  - symbol: "SPY"
+    sec_type: "STK"   # ETF — IB still uses STK on SMART
+  - symbol: "QQQ"
+    sec_type: "STK"

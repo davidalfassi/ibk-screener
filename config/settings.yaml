@@ -1,0 +1,32 @@
+ib_gateway:
+  host: "127.0.0.1"
+  # Port options:
+  #   4002 = IB Gateway paper trading (recommended for testing)
+  #   4001 = IB Gateway live trading
+  #   7497 = TWS paper trading
+  #   7496 = TWS live trading
+  port: 7497 #4002
+  client_id: 1
+  timeout: 30  # seconds to wait for connection
+
+pacing:
+  historical_delay_seconds: 0.6   # IB limit: max 60 historical requests/10 min
+  market_data_delay_seconds: 0.1  # delay between reqMktData calls
+  max_concurrent_mkt_data: 50     # IB hard limit on simultaneous subscriptions
+
+output:
+  directory: "./output"
+  filename_prefix: "premarket"    # files saved as premarket_YYYYMMDD_HHMMSS.yaml
+
+pre_market:
+  check_hours: true               # warn if run outside 4:00–9:30 AM ET
+  tz: "America/New_York"
+
+scheduler:
+  enabled: false
+  mode: "screener"                # screener | watchlist
+  cron:
+    day_of_week: "mon-fri"
+    hour: 8
+    minute: 0
+    timezone: "America/New_York"
