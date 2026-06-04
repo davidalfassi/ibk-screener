@@ -8,7 +8,7 @@ from src.ib.client import IBClient
 from src.ib.contract_details import fetch_all_contract_details
 from src.ib.historical import fetch_all_daily_bars
 from src.ib.market_data import fetch_market_snapshots
-from src.ib.scanner import run_scanner
+from src.ib.scanner import run_scanner_batches
 from src.output.writer import write_output
 from src.processing.enrichment import build_records
 from src.processing.filters import apply_screener_filters, filter_symbols_by_atr
@@ -28,8 +28,8 @@ async def run_screener_pipeline(
     """
     async with IBClient(app_config.ib_gateway) as ib:
 
-        # Step 1: run the IB scanner to get up to 50 symbols
-        symbols = await run_scanner(ib, screener_config)
+        # Step 1: run the IB scanner batches to get up to 150 deduplicated symbols
+        symbols = await run_scanner_batches(ib, screener_config)
         if not symbols:
             log.warning("Scanner returned no symbols — check your scan_code and filters")
             return _empty_output(app_config, dry_run)
@@ -82,7 +82,7 @@ async def run_screener_pipeline(
         log.info("[dry-run] Would write %d records to %s", len(records), app_config.output.directory)
         return Path(app_config.output.directory) / "dry_run.yaml"
 
-    return write_output(records, app_config.output)
+    return write_output(records, app_config.output, max_stocks=app_config.max_number_of_stocks)
 
 
 def _empty_output(app_config: AppConfig, dry_run: bool) -> Path:
