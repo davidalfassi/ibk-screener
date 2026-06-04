@@ -10,6 +10,17 @@ from src.config.loader import IBGatewayConfig
 log = logging.getLogger(__name__)
 
 
+class _ScannerErrorFilter(logging.Filter):
+    """Suppress expected 'API scanner subscription cancelled' errors (Error 162)."""
+    def filter(self, record: logging.LogRecord) -> bool:
+        # Allow the message through unless it's the scanner subscription cancellation error
+        return "API scanner subscription cancelled" not in record.getMessage()
+
+
+# Apply filter to ib_async wrapper logger to suppress expected scanner errors
+logging.getLogger("ib_async.wrapper").addFilter(_ScannerErrorFilter())
+
+
 class IBClient:
     """Async context manager that owns the IB connection lifecycle."""
 

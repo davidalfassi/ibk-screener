@@ -30,7 +30,7 @@ async def run_scanner_batches(ib: IB, config: ScreenerConfig) -> List[str]:
 
     for i, batch in enumerate(batches):
         if i > 0:
-            await asyncio.sleep(2.0)   # brief pause between scanner calls
+            await asyncio.sleep(3.0)   # pause between scanner calls to allow cleanup
         for sym in await _run_single_scan(ib, config, batch):
             if sym not in seen:
                 seen.add(sym)
