@@ -75,10 +75,11 @@ async def _run_single_scan(ib: IB, config: ScreenerConfig, batch: ScannerBatch) 
 
     try:
         scan_data = await ib.reqScannerDataAsync(sub)
+        # Extract symbols immediately while subscription is active
+        symbols = [item.contractDetails.contract.symbol for item in scan_data]
     except Exception as e:
         log.error("Scanner request failed: %s", e)
         return []
 
-    symbols = [item.contractDetails.contract.symbol for item in scan_data]
     log.info("Scanner batch returned %d symbols: %s", len(symbols), symbols)
     return symbols

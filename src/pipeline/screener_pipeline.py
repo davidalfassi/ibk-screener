@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import asyncio
 import logging
 from pathlib import Path
 
@@ -33,6 +34,9 @@ async def run_screener_pipeline(
         if not symbols:
             log.warning("Scanner returned no symbols — check your scan_code and filters")
             return _empty_output(app_config, dry_run)
+
+        # Brief pause to allow scanner subscription to fully clean up
+        await asyncio.sleep(1.0)
 
         # Step 2: resolve contract details (company name, sector, qualified contract)
         contract_infos = await fetch_all_contract_details(
