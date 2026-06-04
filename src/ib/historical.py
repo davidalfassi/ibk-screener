@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import asyncio
 import logging
+import time
+from collections import deque
 from typing import List, Optional
 
 from ib_async import IB, BarData, Contract
@@ -13,6 +15,29 @@ log = logging.getLogger(__name__)
 # Request 20 calendar days to guarantee ≥14 trading days (accounts for weekends + holidays)
 _DURATION = "20 D"
 _BAR_SIZE = "1 day"
+
+
+class _HistoricalLimiter:
+    """≤59 requests per any 10-minute sliding window, with min spacing between calls."""
+    _MAX = 59
+    _WINDOW = 600.0
+
+    def __init__(self) -> None:
+        self._timestamps: deque[float] = deque()
+
+    async def acquire(self, min_spacing: float) -> None:
+        now = time.monotonic()
+        while self._timestamps and now - self._timestamps[0] > self._WINDOW:
+            self._timestamps.popleft()
+        if len(self._timestamps) >= self._MAX:
+            wait = self._WINDOW - (now - self._timestamps[0]) + 0.5
+            log.info("Historical rate limit: pausing %.1f s", wait)
+            await asyncio.sleep(wait)
+            now = time.monotonic()
+            while self._timestamps and now - self._timestamps[0] > self._WINDOW:
+                self._timestamps.popleft()
+        self._timestamps.append(now)
+        await asyncio.sleep(min_spacing)
 
 
 async def fetch_daily_bars(
@@ -46,11 +71,11 @@ async def fetch_all_daily_bars(
 ) -> dict[str, List[BarData]]:
     """Fetch daily bars for all contracts sequentially with pacing delay."""
     results: dict[str, List[BarData]] = {}
+    limiter = _HistoricalLimiter()
     for contract in contracts:
         bars = await fetch_daily_bars(ib, contract)
         if bars:
             results[contract.symbol] = bars
-        # IB enforces max 60 historical requests per 10 minutes
-        await asyncio.sleep(pacing.historical_delay_seconds)
+        await limiter.acquire(pacing.historical_delay_seconds)
     log.info("Fetched historical bars for %d / %d symbols", len(results), len(contracts))
     return results

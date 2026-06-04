@@ -13,9 +13,21 @@ screener:
   # ── Client-side filters (applied after data is fetched from IB) ──
   atr_min: 4.0                   # minimum ATR(14) in dollars
   price_min: 2.0                 # minimum stock price (filters penny stocks)
+  pre_market_vol_min: 1200       # minimum pre-market shares traded
   exclude_sectors:
     - "Health Care"
     # Uncomment to add more sector exclusions:
     # - "Energy"
     # - "Utilities"
     # - "Consumer Defensive"
+
+  # ── Batch scanner config (splits market-cap universe across multiple 50-row scans) ──
+  # Each batch runs one IB scanner call and inherits all params above.
+  # Results are combined, deduplicated, enriched, then sorted by pre_market_chg_pct.
+  scan_batches:
+    - market_cap_min_usd: 2000000000     # $2B – $10B  (small/mid cap)
+      market_cap_max_usd: 10000000000
+    - market_cap_min_usd: 10000000000    # $10B – $50B (large cap)
+      market_cap_max_usd: 50000000000
+    - market_cap_min_usd: 50000000000    # $50B+        (mega cap)
+      market_cap_max_usd: null
