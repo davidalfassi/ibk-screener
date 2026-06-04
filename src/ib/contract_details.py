@@ -42,10 +42,21 @@ async def fetch_contract_details(
         log.debug("%s matched %d contracts, using first result", symbol, len(details_list))
 
     detail = details_list[0]
+    
+    # Debug: log all available sector-related fields
+    sector = detail.category or ""
+    log.debug(
+        "%s: category=%s, industry=%s, longName=%s",
+        symbol,
+        getattr(detail, 'category', 'N/A'),
+        getattr(detail, 'industry', 'N/A'),
+        detail.longName,
+    )
+    
     return ContractInfo(
         symbol=symbol,
         company_name=detail.longName or symbol,
-        sector=detail.category or "",
+        sector=sector,
         primary_exchange=detail.contract.primaryExchange or exchange,
         contract=detail.contract,
     )
