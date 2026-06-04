@@ -47,9 +47,10 @@ class IBClient:
             )
         except asyncio.TimeoutError:
             if attempt == 0:
-                # First timeout — likely stale clientId, retry with next id
+                # First timeout — likely stale clientId, retry with fresh IB instance
                 log.warning("Connection timeout on clientId %d, retrying with %d after 5s", client_id, client_id + 1)
                 await asyncio.sleep(5)
+                self._ib = IB()  # Create fresh IB instance
                 await self._connect(attempt=1)
             else:
                 raise TimeoutError(
@@ -61,6 +62,7 @@ class IBClient:
             if attempt == 0 and "already connected" in str(e).lower():
                 log.warning("clientId %d already in use, retrying with %d after 5s", client_id, client_id + 1)
                 await asyncio.sleep(5)
+                self._ib = IB()  # Create fresh IB instance
                 await self._connect(attempt=1)
             else:
                 raise
