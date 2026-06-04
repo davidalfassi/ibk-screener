@@ -27,15 +27,21 @@ class _HistoricalLimiter:
 
     async def acquire(self, min_spacing: float) -> None:
         now = time.monotonic()
+        # Remove timestamps older than the 10-minute window
         while self._timestamps and now - self._timestamps[0] > self._WINDOW:
             self._timestamps.popleft()
+        
+        # If we've hit the limit, calculate how long to wait
         if len(self._timestamps) >= self._MAX:
-            wait = self._WINDOW - (now - self._timestamps[0]) + 0.5
-            log.info("Historical rate limit: pausing %.1f s", wait)
+            # Wait until the oldest request falls out of the window
+            wait = self._WINDOW - (now - self._timestamps[0]) + 0.1
+            log.info("Historical rate limit: pausing %.1f s (queue: %d/%d)", wait, len(self._timestamps), self._MAX)
             await asyncio.sleep(wait)
             now = time.monotonic()
+            # Clean up again after waiting
             while self._timestamps and now - self._timestamps[0] > self._WINDOW:
                 self._timestamps.popleft()
+        
         self._timestamps.append(now)
         await asyncio.sleep(min_spacing)
 
