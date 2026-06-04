@@ -7,7 +7,6 @@ from pathlib import Path
 from src.config.loader import AppConfig, ScreenerConfig
 from src.ib.client import IBClient
 from src.ib.contract_details import fetch_all_contract_details
-from src.ib.fundamental import fetch_all_market_caps
 from src.ib.historical import fetch_all_daily_bars
 from src.ib.market_data import fetch_market_snapshots
 from src.ib.scanner import run_scanner_batches
@@ -70,11 +69,8 @@ async def run_screener_pipeline(
             log.warning("All symbols filtered out by ATR threshold")
             return _empty_output(app_config, dry_run)
 
-        # Step 5a: fetch market cap data from fundamental data
-        market_caps = await fetch_all_market_caps(ib, surviving_contracts, delay=0.5)
-
-        # Step 5b: fetch pre-market snapshots (price, volume, change%)
-        snapshots = await fetch_market_snapshots(ib, surviving_contracts, app_config.pacing, market_caps=market_caps)
+        # Step 5: fetch pre-market snapshots (price, volume, change%, market cap from tick 258)
+        snapshots = await fetch_market_snapshots(ib, surviving_contracts, app_config.pacing)
 
         # Step 6: assemble StockRecord list
         surviving_infos = {s: contract_infos[s] for s in surviving_symbols if s in contract_infos}

@@ -54,7 +54,6 @@ async def fetch_market_snapshots(
     ib: IB,
     contracts: List[Contract],
     pacing: PacingConfig,
-    market_caps: Optional[Dict[str, Optional[float]]] = None,
 ) -> Dict[str, MarketSnapshot]:
     """
     Fetch pre-market market data for a batch of contracts.
@@ -65,16 +64,9 @@ async def fetch_market_snapshots(
     all contracts, wait for ticks to arrive, read, then cancel everything.
 
     Processes in batches of max_concurrent_mkt_data to respect IB's hard limit.
-    
-    Args:
-        market_caps: Optional dict mapping symbol to market cap in USD.
-                     If provided, these values override fundamentalRatios data.
     """
     if not contracts:
         return {}
-
-    if market_caps is None:
-        market_caps = {}
 
     results: Dict[str, MarketSnapshot] = {}
 
@@ -100,9 +92,6 @@ async def fetch_market_snapshots(
         # Phase 3: read and immediately cancel every subscription
         for symbol, (ticker, contract) in tickers.items():
             snapshot = _extract_snapshot(symbol, ticker)
-            # Override market cap if provided from fundamental data
-            if symbol in market_caps:
-                snapshot.market_cap_usd = market_caps[symbol]
             results[symbol] = snapshot
             ib.cancelMktData(contract)
 
