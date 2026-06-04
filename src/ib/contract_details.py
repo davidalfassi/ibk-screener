@@ -10,6 +10,46 @@ from ib_async import IB, Contract, Stock
 log = logging.getLogger(__name__)
 
 
+# Map IB's detailed categories to broader sector names
+_CATEGORY_TO_SECTOR = {
+    # Health Care sector
+    "Pharmaceuticals": "Health Care",
+    "Healthcare-Services": "Health Care",
+    "Healthcare-Products": "Health Care",
+    "Biotechnology": "Health Care",
+    "Medical-Drugs": "Health Care",
+    "Medical-HMO": "Health Care",
+    "Medical-Instruments": "Health Care",
+    "Medical-Supplies": "Health Care",
+    
+    # Energy sector
+    "Oil & Gas": "Energy",
+    "Oil & Gas Exploration": "Energy",
+    "Oil & Gas Refining": "Energy",
+    "Oil & Gas Storage": "Energy",
+    "Oil & Gas Drilling": "Energy",
+    "Coal": "Energy",
+    "Utilities": "Utilities",
+    
+    # Consumer Defensive
+    "Food Processing": "Consumer Defensive",
+    "Beverages": "Consumer Defensive",
+    "Tobacco": "Consumer Defensive",
+    "Grocery": "Consumer Defensive",
+}
+
+
+def _map_category_to_sector(category: str) -> str:
+    """Map IB's detailed category to a broader sector name."""
+    if not category:
+        return ""
+    # Try exact match first
+    if category in _CATEGORY_TO_SECTOR:
+        return _CATEGORY_TO_SECTOR[category]
+    # Return the category as-is if no mapping exists
+    return category
+
+
 @dataclass
 class ContractInfo:
     symbol: str
@@ -43,12 +83,15 @@ async def fetch_contract_details(
 
     detail = details_list[0]
     
-    # Debug: log all available sector-related fields
-    sector = detail.category or ""
+    # Map IB's detailed category to broader sector name
+    category = detail.category or ""
+    sector = _map_category_to_sector(category)
+    
     log.debug(
-        "%s: category=%s, industry=%s, longName=%s",
+        "%s: category=%s → sector=%s, industry=%s, longName=%s",
         symbol,
-        getattr(detail, 'category', 'N/A'),
+        category,
+        sector,
         getattr(detail, 'industry', 'N/A'),
         detail.longName,
     )
