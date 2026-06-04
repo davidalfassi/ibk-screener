@@ -37,7 +37,8 @@ async def run_screener_pipeline(
 
         # Longer pause to allow all scanner subscriptions to fully clean up
         # (we ran 3 scanner batches, each creates a subscription that needs cleanup)
-        await asyncio.sleep(3.0)
+        # IB Gateway needs time to fully release scanner resources before contract requests
+        await asyncio.sleep(5.0)
 
         # Step 2: resolve contract details (company name, sector, qualified contract)
         contract_infos = await fetch_all_contract_details(
