@@ -31,5 +31,5 @@ scheduler:
     minute: 0
     timezone: "America/New_York"
 
-max_number_of_stocks: 70          # top N stocks by pre_market_chg_pct emitted to output
+max_number_of_stocks: 59          # top N stocks by pre_market_chg_pct emitted to output
 python.terminal.useEnvFile: true

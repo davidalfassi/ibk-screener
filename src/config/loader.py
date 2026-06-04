@@ -62,6 +62,13 @@ class AppConfig:
     output: OutputConfig = field(default_factory=OutputConfig)
     pre_market: PreMarketConfig = field(default_factory=PreMarketConfig)
     scheduler: SchedulerConfig = field(default_factory=SchedulerConfig)
+    max_number_of_stocks: int = 70
+
+
+@dataclass
+class ScannerBatch:
+    market_cap_min_usd: Optional[float] = None
+    market_cap_max_usd: Optional[float] = None
 
 
 @dataclass
@@ -75,7 +82,9 @@ class ScreenerConfig:
     avg_volume_min: Optional[int] = None
     atr_min: Optional[float] = None
     price_min: Optional[float] = None
+    pre_market_vol_min: Optional[float] = None
     exclude_sectors: List[str] = field(default_factory=list)
+    scan_batches: List[ScannerBatch] = field(default_factory=list)
 
 
 @dataclass

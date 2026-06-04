@@ -81,6 +81,8 @@ scheduler:
     hour: 8                 # 08:00 AM New York time
     minute: 0
     timezone: "America/New_York"
+
+max_number_of_stocks: 70    # top N stocks by pre_market_chg_pct emitted to output
 ```
 
 **Key setting:** Set `port` to match your IB Gateway/TWS configuration.
@@ -90,7 +92,7 @@ scheduler:
 ```yaml
 screener:
   scan_code: "TOP_PERC_GAIN"     # IB scanner ranking (pre-market gainers)
-  number_of_rows: 50             # max results (IB cap: 50)
+  number_of_rows: 50             # rows per batch (IB hard cap: 50)
 
   # Server-side filters (IB applies these before returning results)
   market_cap_min_usd: 2000000000  # $2 billion minimum
@@ -98,12 +100,26 @@ screener:
 
   # Client-side filters (applied after data is fetched)
   atr_min: 4.0                   # ATR(14) minimum in dollars
-  price_min: 5.0                 # minimum stock price
+  price_min: 2.0                 # minimum stock price
+  pre_market_vol_min: 1200       # minimum pre-market shares traded
   exclude_sectors:
     - "Health Care"
     # - "Energy"
     # - "Utilities"
+
+  # Batch scanner — splits the market-cap universe into non-overlapping ranges.
+  # Each batch runs one IB scanner call (up to 50 rows). Results are combined,
+  # deduplicated, enriched, and sorted by pre_market_chg_pct (highest first).
+  scan_batches:
+    - market_cap_min_usd: 2000000000    # $2B – $10B
+      market_cap_max_usd: 10000000000
+    - market_cap_min_usd: 10000000000   # $10B – $50B
+      market_cap_max_usd: 50000000000
+    - market_cap_min_usd: 50000000000   # $50B+
+      market_cap_max_usd: null
 ```
+
+The three batches give up to **150 unique candidates**. After enrichment and filtering the top `max_total_rows` gainers are written to output.
 
 **Available `scan_code` values** (IB scanner ranking modes):
 
