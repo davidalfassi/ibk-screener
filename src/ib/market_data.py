@@ -112,10 +112,14 @@ def _extract_snapshot(symbol: str, ticker) -> MarketSnapshot:
 
     market_cap: Optional[float] = None
     try:
-        if ticker.fundamentalRatios and ticker.fundamentalRatios.mktCap:
-            market_cap = float(ticker.fundamentalRatios.mktCap)
+        fr = ticker.fundamentalRatios
+        if fr is not None:
+            safe_val = _safe(fr.mktCap)          # handles nan → None
+            if safe_val is not None and safe_val > 0:
+                market_cap = safe_val * 1_000_000  # mktCap is in millions USD
     except (AttributeError, TypeError, ValueError):
         pass
+    log.debug("%s: fundamentalRatios=%s market_cap=%s", symbol, ticker.fundamentalRatios, market_cap)
 
     volume = _safe(ticker.volume)
 
