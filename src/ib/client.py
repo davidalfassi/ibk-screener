@@ -46,15 +46,21 @@ class IBClient:
                 "Make sure IB Gateway (or TWS) is running and API connections are enabled."
             )
         except asyncio.TimeoutError:
-            raise TimeoutError(
-                f"Connection to IB Gateway timed out after {cfg.timeout}s. "
-                "Check host/port in config/settings.yaml."
-            )
+            if attempt == 0:
+                # First timeout — likely stale clientId, retry with next id
+                log.warning("Connection timeout on clientId %d, retrying with %d after 5s", client_id, client_id + 1)
+                await asyncio.sleep(5)
+                await self._connect(attempt=1)
+            else:
+                raise TimeoutError(
+                    f"Connection to IB Gateway timed out after {cfg.timeout}s. "
+                    "Check host/port in config/settings.yaml."
+                )
         except Exception as e:
             # Duplicate clientId after unclean disconnect — retry once with next id
             if attempt == 0 and "already connected" in str(e).lower():
-                log.warning("clientId %d already in use, retrying with %d", client_id, client_id + 1)
-                await asyncio.sleep(2)
+                log.warning("clientId %d already in use, retrying with %d after 5s", client_id, client_id + 1)
+                await asyncio.sleep(5)
                 await self._connect(attempt=1)
             else:
                 raise
