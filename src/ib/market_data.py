@@ -113,26 +113,17 @@ def _extract_snapshot(symbol: str, ticker) -> MarketSnapshot:
 
     market_cap: Optional[float] = None
     
-    # Debug: log all available ticker attributes
-    ticker_attrs = [attr for attr in dir(ticker) if not attr.startswith('_')]
-    log.debug("%s: ticker attributes: %s", symbol, ticker_attrs)
-    
     # Try to get market cap from fundamentalRatios (tick 258)
     try:
         fr = getattr(ticker, 'fundamentalRatios', None)
-        log.debug("%s: fundamentalRatios type=%s, value=%s", symbol, type(fr), fr)
         
         if fr is not None:
-            # Debug: log all fundamentalRatios attributes
-            fr_attrs = [attr for attr in dir(fr) if not attr.startswith('_')]
-            log.debug("%s: fundamentalRatios attributes: %s", symbol, fr_attrs)
-            
             # Try different possible attribute names for market cap
             mkt_cap_val = None
             for attr_name in ['mktCap', 'marketCap', 'market_cap', 'MKTCAP', 'MarketCap']:
                 if hasattr(fr, attr_name):
                     mkt_cap_val = getattr(fr, attr_name)
-                    log.debug("%s: found %s=%s (type=%s)", symbol, attr_name, mkt_cap_val, type(mkt_cap_val))
+                    log.debug("%s: found %s=%s", symbol, attr_name, mkt_cap_val)
                     break
             
             if mkt_cap_val is not None:
@@ -153,11 +144,13 @@ def _extract_snapshot(symbol: str, ticker) -> MarketSnapshot:
                         log.info("%s: extracted market_cap=%s from ticker.%s", symbol, market_cap, attr_name)
                         break
         
-        # Try to extract from ticker.ticks (raw tick data)
+        # Try to extract from ticker.ticks (raw tick data) - only check first few ticks
         if market_cap is None and hasattr(ticker, 'ticks'):
-            for tick in ticker.ticks:
+            # Limit to first 20 ticks to avoid performance issues
+            ticks_to_check = ticker.ticks[:20] if hasattr(ticker.ticks, '__getitem__') else list(ticker.ticks)[:20]
+            for tick in ticks_to_check:
                 if hasattr(tick, 'tickType') and tick.tickType == 258:  # Fundamental ratios tick
-                    log.debug("%s: found tick 258 (fundamental ratios): %s", symbol, tick)
+                    log.debug("%s: found tick 258 (fundamental ratios)", symbol)
                     # The value might be in tick.value or tick.price
                     for val_attr in ['value', 'price', 'size']:
                         if hasattr(tick, val_attr):
@@ -174,7 +167,7 @@ def _extract_snapshot(symbol: str, ticker) -> MarketSnapshot:
         log.warning("%s: error extracting market cap: %s", symbol, e)
     
     if market_cap is None:
-        log.warning("%s: market cap not found in any location", symbol)
+        log.debug("%s: market cap not found", symbol)
     
     volume = _safe(ticker.volume)
 
