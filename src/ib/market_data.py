@@ -112,15 +112,42 @@ def _extract_snapshot(symbol: str, ticker) -> MarketSnapshot:
             log.debug("%s: using bid/ask midpoint as pre-market price (last was nan)", symbol)
 
     market_cap: Optional[float] = None
+    
+    # Try to get market cap from fundamentalRatios (tick 258)
     try:
-        fr = ticker.fundamentalRatios
+        fr = getattr(ticker, 'fundamentalRatios', None)
+        log.debug("%s: fundamentalRatios object=%s", symbol, fr)
+        
         if fr is not None:
-            safe_val = _safe(fr.mktCap)          # handles nan → None
-            if safe_val is not None and safe_val > 0:
-                market_cap = safe_val * 1_000_000  # mktCap is in millions USD
-    except (AttributeError, TypeError, ValueError):
-        pass
-    log.debug("%s: fundamentalRatios=%s market_cap=%s", symbol, ticker.fundamentalRatios, market_cap)
+            # Try different possible attribute names for market cap
+            mkt_cap_val = None
+            for attr_name in ['mktCap', 'marketCap', 'market_cap', 'MKTCAP']:
+                if hasattr(fr, attr_name):
+                    mkt_cap_val = getattr(fr, attr_name)
+                    log.debug("%s: found %s=%s", symbol, attr_name, mkt_cap_val)
+                    break
+            
+            if mkt_cap_val is not None:
+                safe_val = _safe(mkt_cap_val)
+                if safe_val is not None and safe_val > 0:
+                    market_cap = safe_val * 1_000_000  # Convert millions to actual USD
+                    log.debug("%s: converted market_cap=%s", symbol, market_cap)
+        
+        # Also try to get market cap directly from ticker attributes
+        if market_cap is None:
+            for attr_name in ['marketCap', 'mktCap', 'market_cap']:
+                if hasattr(ticker, attr_name):
+                    direct_val = getattr(ticker, attr_name)
+                    safe_val = _safe(direct_val)
+                    if safe_val is not None and safe_val > 0:
+                        market_cap = safe_val
+                        log.debug("%s: found direct %s=%s", symbol, attr_name, market_cap)
+                        break
+                        
+    except Exception as e:
+        log.warning("%s: error extracting market cap: %s", symbol, e)
+    
+    log.debug("%s: final market_cap=%s", symbol, market_cap)
 
     volume = _safe(ticker.volume)
 
