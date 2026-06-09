@@ -81,6 +81,7 @@ async def run_merged_pipeline(
             watchlist_records = build_records(
                 contract_infos, snapshots, bars_map, atr_map, 14
             )
+            log.info("Watchlist fetched %d records", len(watchlist_records))
 
     # Combine records (watchlist first, then screener)
     # Deduplicate by symbol to avoid duplicates
