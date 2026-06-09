@@ -87,15 +87,14 @@ async def fetch_contract_details(
     category = detail.category or ""
     sector = _map_category_to_sector(category)
     
-    log.debug(
-        "%s: category=%s → sector=%s, industry=%s, longName=%s",
+    log.info(
+        "%s → %s | sector=%s | exchange=%s",
         symbol,
-        category,
-        sector,
-        getattr(detail, 'industry', 'N/A'),
-        detail.longName,
+        detail.longName or symbol,
+        sector or "(unknown)",
+        detail.contract.primaryExchange or "SMART",
     )
-    
+
     return ContractInfo(
         symbol=symbol,
         company_name=detail.longName or symbol,

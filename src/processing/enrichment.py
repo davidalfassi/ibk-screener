@@ -33,16 +33,23 @@ def build_records(
     contract_infos: Dict[str, ContractInfo],
     snapshots: Dict[str, MarketSnapshot],
     bars_map: Dict[str, List[BarData]],
+    atr_map: Dict[str, float | None] | None = None,
     atr_period: int = 14,
 ) -> List[StockRecord]:
-    """Assemble a StockRecord for every symbol that has contract details."""
+    """Assemble a StockRecord for every symbol that has contract details.
+
+    atr_map: pre-computed ATR values from the pipeline's pre-filter stage.
+    When provided it avoids recomputing ATR from bars a second time.
+    """
     records: List[StockRecord] = []
 
     for symbol, info in contract_infos.items():
         snap = snapshots.get(symbol)
-        bars = bars_map.get(symbol, [])
-        # ATR is calculated as a percentage of the most recent close
-        atr_val = calculate_atr(bars, atr_period) if bars else None
+        if atr_map is not None:
+            atr_val = atr_map.get(symbol)
+        else:
+            bars = bars_map.get(symbol, [])
+            atr_val = calculate_atr(bars, atr_period) if bars else None
 
         records.append(StockRecord(
             symbol=symbol,

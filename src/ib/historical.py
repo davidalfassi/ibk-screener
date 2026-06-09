@@ -49,25 +49,38 @@ class _HistoricalLimiter:
 async def fetch_daily_bars(
     ib: IB,
     contract: Contract,
+    max_attempts: int = 2,
 ) -> Optional[List[BarData]]:
-    """Fetch 20 days of daily OHLC bars for a contract. Returns None on failure."""
-    try:
-        bars = await ib.reqHistoricalDataAsync(
-            contract,
-            endDateTime="",       # empty = up to now
-            durationStr=_DURATION,
-            barSizeSetting=_BAR_SIZE,
-            whatToShow="TRADES",
-            useRTH=True,          # regular trading hours for clean ATR inputs
-            formatDate=1,
-        )
-        if not bars:
-            log.warning("No historical bars returned for %s", contract.symbol)
-            return None
-        return list(bars)
-    except Exception as e:
-        log.warning("reqHistoricalData failed for %s: %s", contract.symbol, e)
-        return None
+    """Fetch 20 days of daily OHLC bars for a contract. Returns None on failure.
+
+    Retries once (max_attempts=2) with a 3-second backoff to handle IB transient
+    failures (pacing errors, temporary data gaps, server-side throttle).
+    """
+    sym = contract.symbol
+    for attempt in range(1, max_attempts + 1):
+        try:
+            bars = await ib.reqHistoricalDataAsync(
+                contract,
+                endDateTime="",       # empty = up to now
+                durationStr=_DURATION,
+                barSizeSetting=_BAR_SIZE,
+                whatToShow="TRADES",
+                useRTH=True,          # regular trading hours for clean ATR inputs
+                formatDate=1,
+            )
+            if bars:
+                log.debug("%s: received %d bars (%s → %s)", sym, len(bars), bars[0].date, bars[-1].date)
+                return list(bars)
+            log.warning("%s: empty bars on attempt %d/%d", sym, attempt, max_attempts)
+        except Exception as e:
+            log.warning("%s: reqHistoricalData failed on attempt %d/%d: %s", sym, attempt, max_attempts, e)
+
+        if attempt < max_attempts:
+            log.info("%s: retrying historical bars in 3s...", sym)
+            await asyncio.sleep(3.0)
+
+    log.error("%s: historical bars unavailable after %d attempt(s) — symbol will be dropped", sym, max_attempts)
+    return None
 
 
 async def fetch_all_daily_bars(

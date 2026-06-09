@@ -1,0 +1,289 @@
+stocks:
+- symbol: PAYO
+  company_name: PAYONEER GLOBAL INC
+  market_cap: 1.72B
+  pre_market_chg: +24.90%
+  pre_market_volume: 472.30K
+  pre_market_price: 6.42
+  atr: 4.95%
+  price: 5.14
+- symbol: CECO
+  company_name: CECO ENVIRONMENTAL CORP
+  market_cap: 4.70B
+  pre_market_chg: +16.24%
+  pre_market_volume: 11.46K
+  pre_market_price: 93.61
+  atr: 6.24%
+  price: 80.53
+- symbol: VECO
+  company_name: VEECO INSTRUMENTS INC
+  market_cap: 3.73B
+  pre_market_chg: +10.71%
+  pre_market_volume: 35.34K
+  pre_market_price: 67.58
+  atr: 6.49%
+  price: 61.04
+- symbol: BAP
+  company_name: CREDICORP LTD
+  market_cap: 25.39B
+  pre_market_chg: +10.53%
+  pre_market_volume: 28.77K
+  pre_market_price: 353.57
+  atr: 4.89%
+  price: 319.89
+- symbol: DKNG
+  company_name: DRAFTKINGS INC-CL A
+  market_cap: 12.29B
+  pre_market_chg: +10.33%
+  pre_market_volume: 153.20K
+  pre_market_price: 27.34
+  atr: 4.87%
+  price: 24.78
+- symbol: UCTT
+  company_name: ULTRA CLEAN HOLDINGS INC
+  market_cap: 3.76B
+  pre_market_chg: +9.03%
+  pre_market_volume: 12.45K
+  pre_market_price: 91.51
+  atr: 7.74%
+  price: 83.93
+- symbol: SN
+  company_name: SHARKNINJA INC
+  market_cap: 16.74B
+  pre_market_chg: +8.99%
+  pre_market_volume: 24.61K
+  pre_market_price: 128.91
+  atr: 4.16%
+  price: 118.28
+- symbol: FND
+  company_name: FLOOR & DECOR HOLDINGS INC-A
+  market_cap: 4.96B
+  pre_market_chg: +8.14%
+  pre_market_volume: 27.98K
+  pre_market_price: 49.67
+  atr: 5.06%
+  price: 45.93
+- symbol: SOXS
+  company_name: DIREX DAI SEMI BE 3X ETF-USD
+  market_cap: null
+  pre_market_chg: +8.08%
+  pre_market_volume: 12.98M
+  pre_market_price: 6.15
+  atr: 18.10%
+  price: 5.69
+- symbol: MGNI
+  company_name: MAGNITE INC
+  market_cap: 2.10B
+  pre_market_chg: +8.00%
+  pre_market_volume: 25.94K
+  pre_market_price: 15.8
+  atr: 4.84%
+  price: 14.63
+- symbol: W
+  company_name: WAYFAIR INC- CLASS A
+  market_cap: null
+  pre_market_chg: +6.90%
+  pre_market_volume: 35.98K
+  pre_market_price: 71.78
+  atr: 5.99%
+  price: 67.15
+- symbol: HIMS
+  company_name: HIMS & HERS HEALTH INC
+  market_cap: 6.29B
+  pre_market_chg: +6.59%
+  pre_market_volume: 194.28K
+  pre_market_price: 28.96
+  atr: 6.81%
+  price: 27.17
+- symbol: ELF
+  company_name: ELF BEAUTY INC
+  market_cap: 3.11B
+  pre_market_chg: +6.31%
+  pre_market_volume: 35.86K
+  pre_market_price: 55.58
+  atr: 6.24%
+  price: 52.28
+- symbol: RKT
+  company_name: ROCKET COS INC-CLASS A
+  market_cap: 34.94B
+  pre_market_chg: +6.23%
+  pre_market_volume: 158.94K
+  pre_market_price: 13.12
+  atr: 5.66%
+  price: 12.35
+- symbol: SRAD
+  company_name: SPORTRADAR GROUP AG-A
+  market_cap: 4.57B
+  pre_market_chg: +6.23%
+  pre_market_volume: 44.70K
+  pre_market_price: 16.21
+  atr: 4.45%
+  price: 15.26
+- symbol: WRBY
+  company_name: WARBY PARKER INC-CLASS A
+  market_cap: 2.89B
+  pre_market_chg: +6.21%
+  pre_market_volume: 29.93K
+  pre_market_price: 24.97
+  atr: 7.91%
+  price: 23.51
+- symbol: ALK
+  company_name: ALASKA AIR GROUP INC
+  market_cap: 4.71B
+  pre_market_chg: +6.11%
+  pre_market_volume: 42.79K
+  pre_market_price: 44.82
+  atr: 4.39%
+  price: 42.24
+- symbol: BLDR
+  company_name: BUILDERS FIRSTSOURCE INC
+  market_cap: 7.86B
+  pre_market_chg: +5.69%
+  pre_market_volume: 21.23K
+  pre_market_price: 77.28
+  atr: 4.46%
+  price: 73.12
+- symbol: QXO
+  company_name: QXO INC
+  market_cap: 11.27B
+  pre_market_chg: +5.41%
+  pre_market_volume: 136.39K
+  pre_market_price: 16.38
+  atr: 5.52%
+  price: 15.54
+- symbol: COMP
+  company_name: COMPASS INC - CLASS A
+  market_cap: 5.66B
+  pre_market_chg: +5.28%
+  pre_market_volume: 68.19K
+  pre_market_price: 7.98
+  atr: 6.40%
+  price: 7.58
+- symbol: SQQQ
+  company_name: PROSHARES ULTRAPRO SHORT QQQ
+  market_cap: null
+  pre_market_chg: +4.87%
+  pre_market_volume: 1.47M
+  pre_market_price: 43.27
+  atr: 5.55%
+  price: 41.26
+- symbol: WHR
+  company_name: WHIRLPOOL CORP
+  market_cap: 2.56B
+  pre_market_chg: +4.75%
+  pre_market_volume: 16.38K
+  pre_market_price: 41.44
+  atr: 4.73%
+  price: 39.56
+- symbol: CWK
+  company_name: CUSHMAN & WAKEFIELD LTD
+  market_cap: 3.10B
+  pre_market_chg: +4.68%
+  pre_market_volume: 14.12K
+  pre_market_price: 13.86
+  atr: 4.31%
+  price: 13.24
+- symbol: TREX
+  company_name: TREX COMPANY INC
+  market_cap: 4.37B
+  pre_market_chg: +4.61%
+  pre_market_volume: 20.47K
+  pre_market_price: 43.99
+  atr: 4.21%
+  price: 42.05
+- symbol: RXO
+  company_name: RXO INC
+  market_cap: 4.63B
+  pre_market_chg: +4.35%
+  pre_market_volume: 18.78K
+  pre_market_price: 29.29
+  atr: 5.60%
+  price: 28.07
+- symbol: VNET
+  company_name: VNET GROUP INC-ADR
+  market_cap: 2.53B
+  pre_market_chg: +4.34%
+  pre_market_volume: 127.91K
+  pre_market_price: 9.26
+  atr: 9.98%
+  price: 8.87
+- symbol: DLTR
+  company_name: DOLLAR TREE INC
+  market_cap: 20.70B
+  pre_market_chg: +4.34%
+  pre_market_volume: 16.43K
+  pre_market_price: 112.36
+  atr: 4.55%
+  price: 107.69
+- symbol: AAL
+  company_name: AMERICAN AIRLINES GROUP INC
+  market_cap: 8.99B
+  pre_market_chg: +4.19%
+  pre_market_volume: 1.39M
+  pre_market_price: 14.17
+  atr: 4.16%
+  price: 13.6
+- symbol: RDDT
+  company_name: REDDIT INC-CL A
+  market_cap: 32.94B
+  pre_market_chg: +3.97%
+  pre_market_volume: 43.47K
+  pre_market_price: 177.92
+  atr: 6.13%
+  price: 171.13
+- symbol: RYAN
+  company_name: RYAN SPECIALTY HOLDINGS INC
+  market_cap: null
+  pre_market_chg: +3.85%
+  pre_market_volume: 42.18K
+  pre_market_price: 32.87
+  atr: 4.74%
+  price: 31.65
+- symbol: UAL
+  company_name: UNITED AIRLINES HOLDINGS INC
+  market_cap: 34.18B
+  pre_market_chg: +3.63%
+  pre_market_volume: 48.12K
+  pre_market_price: 109.14
+  atr: 4.26%
+  price: 105.32
+- symbol: CPNG
+  company_name: COUPANG INC
+  market_cap: 27.25B
+  pre_market_chg: +3.49%
+  pre_market_volume: 442.45K
+  pre_market_price: 15.71
+  atr: 4.69%
+  price: 15.18
+- symbol: CBOE
+  company_name: CBOE GLOBAL MARKETS INC
+  market_cap: 29.34B
+  pre_market_chg: +3.48%
+  pre_market_volume: 28.26K
+  pre_market_price: 290.08
+  atr: 4.41%
+  price: 280.32
+- symbol: SKM
+  company_name: SK TELECOM CO LTD-SPON ADR
+  market_cap: 14.70B
+  pre_market_chg: +3.30%
+  pre_market_volume: 33.41K
+  pre_market_price: 40.95
+  atr: 6.14%
+  price: 39.64
+- symbol: SQM
+  company_name: QUIMICA Y MINERA CHIL-SP ADR
+  market_cap: 20.27B
+  pre_market_chg: +3.16%
+  pre_market_volume: 11.04K
+  pre_market_price: 75.06
+  atr: 4.53%
+  price: 72.76
+- symbol: EC
+  company_name: ECOPETROL SA-SPONSORED ADR
+  market_cap: 31.45B
+  pre_market_chg: +2.61%
+  pre_market_volume: 24.36K
+  pre_market_price: 15.75
+  atr: 4.08%
+  price: 15.35

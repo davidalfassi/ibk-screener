@@ -94,6 +94,15 @@ async def fetch_market_snapshots(
             snapshot = _extract_snapshot(symbol, ticker)
             results[symbol] = snapshot
             ib.cancelMktData(contract)
+            log.info(
+                "%s: last=%.2f  close=%.2f  vol=%s  mktcap=%s  chg=%s%%",
+                symbol,
+                snapshot.pre_market_price or 0.0,
+                snapshot.prev_close or 0.0,
+                f"{snapshot.pre_market_volume:.0f}" if snapshot.pre_market_volume is not None else "n/a",
+                f"{snapshot.market_cap_usd / 1e9:.2f}B" if snapshot.market_cap_usd else "n/a",
+                f"{snapshot.pre_market_chg_pct:.2f}" if snapshot.pre_market_chg_pct is not None else "n/a",
+            )
 
     log.info("Fetched market snapshots for %d / %d symbols", len(results), len(contracts))
     return results

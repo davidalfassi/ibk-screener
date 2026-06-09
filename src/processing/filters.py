@@ -63,11 +63,15 @@ def filter_symbols_by_atr(
     symbols: List[str],
     atr_map: dict[str, float | None],
     atr_min: float | None,
+    bars_map: dict | None = None,
 ) -> List[str]:
     """
     Quick pre-filter on ATR percentage values before fetching market data snapshots.
     Saves API calls for symbols that won't pass the ATR threshold.
     ATR values are expressed as percentages.
+
+    bars_map is optional but recommended — when provided it distinguishes between
+    "historical fetch failed" (data issue) and "ATR below threshold" (expected filter).
     """
     if atr_min is None:
         return symbols
@@ -75,8 +79,13 @@ def filter_symbols_by_atr(
     passed = []
     for sym in symbols:
         atr = atr_map.get(sym)
-        if atr is None or atr < atr_min:
-            log.info("Pre-filtered %s: ATR=%s%% (min=%s%%)", sym, atr, atr_min)
+        if atr is None:
+            if bars_map is not None and sym not in bars_map:
+                log.warning("Drop %s: historical bars fetch failed — ATR cannot be computed", sym)
+            else:
+                log.warning("Drop %s: insufficient bars for ATR calculation (need ≥15 trading days)", sym)
+        elif atr < atr_min:
+            log.info("Drop %s: ATR=%.2f%% < min %.2f%%", sym, atr, atr_min)
         else:
             passed.append(sym)
 

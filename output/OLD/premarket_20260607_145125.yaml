@@ -1,0 +1,105 @@
+stocks:
+- symbol: CHTR
+  company_name: CHARTER COMMUNICATIONS INC-A
+  market_cap: 15.87B
+  pre_market_chg: -100.77%
+  pre_market_volume: '0'
+  pre_market_price: -1.0
+  atr: 5.30%
+  price: 129.05
+- symbol: SFM
+  company_name: SPROUTS FARMERS MARKET INC
+  market_cap: 7.54B
+  pre_market_chg: -101.25%
+  pre_market_volume: '0'
+  pre_market_price: -1.0
+  atr: 4.67%
+  price: 80.18
+- symbol: OLLI
+  company_name: OLLIE'S BARGAIN OUTLET HOLDI
+  market_cap: 4.50B
+  pre_market_chg: -101.34%
+  pre_market_volume: '0'
+  pre_market_price: -1.0
+  atr: 5.09%
+  price: 74.47
+- symbol: TTAN
+  company_name: SERVICETITAN INC-A
+  market_cap: null
+  pre_market_chg: -101.35%
+  pre_market_volume: '0'
+  pre_market_price: -1.0
+  atr: 5.84%
+  price: 74.33
+- symbol: VSXY
+  company_name: VICTORIA'S SECRET & CO
+  market_cap: 5.80B
+  pre_market_chg: -101.37%
+  pre_market_volume: '0'
+  pre_market_price: -1.0
+  atr: 6.98%
+  price: 73.08
+- symbol: AAP
+  company_name: ADVANCE AUTO PARTS INC
+  market_cap: 3.37B
+  pre_market_chg: -101.79%
+  pre_market_volume: '0'
+  pre_market_price: -1.0
+  atr: 5.75%
+  price: 55.89
+- symbol: SQQQ
+  company_name: PROSHARES ULTRAPRO SHORT QQQ
+  market_cap: null
+  pre_market_chg: -102.65%
+  pre_market_volume: '0'
+  pre_market_price: -1.0
+  atr: 4.66%
+  price: 37.76
+- symbol: HRB
+  company_name: H&R BLOCK INC
+  market_cap: 4.75B
+  pre_market_chg: -102.67%
+  pre_market_volume: '0'
+  pre_market_price: -1.0
+  atr: 4.07%
+  price: 37.47
+- symbol: RYAN
+  company_name: RYAN SPECIALTY HOLDINGS INC
+  market_cap: 8.39B
+  pre_market_chg: -103.14%
+  pre_market_volume: '0'
+  pre_market_price: -1.0
+  atr: 4.65%
+  price: 31.81
+- symbol: REZI
+  company_name: RESIDEO TECHNOLOGIES INC
+  market_cap: 4.58B
+  pre_market_chg: -103.31%
+  pre_market_volume: '0'
+  pre_market_price: -1.0
+  atr: 5.70%
+  price: 30.23
+- symbol: LBRDK
+  company_name: LIBERTY BROADBAND-C
+  market_cap: 4.33B
+  pre_market_chg: -103.31%
+  pre_market_volume: '0'
+  pre_market_price: -1.0
+  atr: 5.39%
+  price: 30.17
+- symbol: CMBT
+  company_name: CMB TECH NV
+  market_cap: 4.00B
+  pre_market_chg: -106.93%
+  pre_market_volume: '0'
+  pre_market_price: -1.0
+  atr: 4.01%
+  price: 14.44
+- symbol: SOXS
+  company_name: DIREX DAI SEMI BE 3X ETF-USD
+  market_cap: null
+  pre_market_chg: -119.23%
+  pre_market_volume: '0'
+  pre_market_price: -1.0
+  atr: 15.42%
+  price: 5.2

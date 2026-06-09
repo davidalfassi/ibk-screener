@@ -1,0 +1,321 @@
+stocks:
+- symbol: RDW
+  company_name: REDWIRE CORP
+  market_cap: null
+  pre_market_chg: +14.77%
+  pre_market_volume: 748.77K
+  pre_market_price: 21.37
+  atr: 12.50%
+  price: 18.62
+- symbol: BAND
+  company_name: BANDWIDTH INC-CLASS A
+  market_cap: null
+  pre_market_chg: +12.74%
+  pre_market_volume: 16.07K
+  pre_market_price: 73.96
+  atr: 6.53%
+  price: 65.6
+- symbol: INOD
+  company_name: INNODATA INC
+  market_cap: null
+  pre_market_chg: +9.91%
+  pre_market_volume: 29.95K
+  pre_market_price: 119.0
+  atr: 11.45%
+  price: 108.27
+- symbol: NN
+  company_name: NEXTNAV INC
+  market_cap: null
+  pre_market_chg: +9.32%
+  pre_market_volume: 58.30K
+  pre_market_price: 23.58
+  atr: 7.60%
+  price: 21.57
+- symbol: FLNC
+  company_name: FLUENCE ENERGY INC
+  market_cap: null
+  pre_market_chg: +9.01%
+  pre_market_volume: 108.43K
+  pre_market_price: 27.09
+  atr: 12.79%
+  price: 24.85
+- symbol: KTOS
+  company_name: KRATOS DEFENSE & SECURITY
+  market_cap: null
+  pre_market_chg: +8.47%
+  pre_market_volume: 42.15K
+  pre_market_price: 63.38
+  atr: 6.14%
+  price: 58.43
+- symbol: RDDT
+  company_name: REDDIT INC-CL A
+  market_cap: null
+  pre_market_chg: +8.27%
+  pre_market_volume: 73.77K
+  pre_market_price: 183.5
+  atr: 5.50%
+  price: 169.49
+- symbol: FPS
+  company_name: FORGENT POWER SOLUTIONS INC
+  market_cap: null
+  pre_market_chg: +8.00%
+  pre_market_volume: 89.11K
+  pre_market_price: 64.56
+  atr: 6.74%
+  price: 59.78
+- symbol: VOYG
+  company_name: VOYAGER TECHNOLOGIES INC-A
+  market_cap: null
+  pre_market_chg: +7.78%
+  pre_market_volume: 25.15K
+  pre_market_price: 48.46
+  atr: 10.11%
+  price: 44.96
+- symbol: OUST
+  company_name: OUSTER INC
+  market_cap: null
+  pre_market_chg: +7.53%
+  pre_market_volume: 52.54K
+  pre_market_price: 47.27
+  atr: 9.86%
+  price: 43.96
+- symbol: AAOI
+  company_name: APPLIED OPTOELECTRONICS INC
+  market_cap: null
+  pre_market_chg: +7.35%
+  pre_market_volume: 144.87K
+  pre_market_price: 197.6
+  atr: 12.94%
+  price: 184.07
+- symbol: IRDM
+  company_name: IRIDIUM COMMUNICATIONS INC
+  market_cap: null
+  pre_market_chg: +7.33%
+  pre_market_volume: 29.41K
+  pre_market_price: 52.56
+  atr: 6.21%
+  price: 48.97
+- symbol: RCAT
+  company_name: RED CAT HOLDINGS INC
+  market_cap: null
+  pre_market_chg: +7.25%
+  pre_market_volume: 229.77K
+  pre_market_price: 14.79
+  atr: 8.57%
+  price: 13.79
+- symbol: WOLF
+  company_name: WOLFSPEED INC
+  market_cap: null
+  pre_market_chg: +7.02%
+  pre_market_volume: 77.47K
+  pre_market_price: 66.0
+  atr: 16.28%
+  price: 61.67
+- symbol: AXON
+  company_name: AXON ENTERPRISE INC
+  market_cap: null
+  pre_market_chg: +6.89%
+  pre_market_volume: 32.18K
+  pre_market_price: 514.65
+  atr: 5.39%
+  price: 481.48
+- symbol: SRAD
+  company_name: SPORTRADAR GROUP AG-A
+  market_cap: null
+  pre_market_chg: +6.61%
+  pre_market_volume: 33.35K
+  pre_market_price: 14.35
+  atr: 4.35%
+  price: 13.46
+- symbol: RHI
+  company_name: ROBERT HALF INC
+  market_cap: null
+  pre_market_chg: +6.56%
+  pre_market_volume: 20.83K
+  pre_market_price: 31.5
+  atr: 4.86%
+  price: 29.56
+- symbol: STEP
+  company_name: STEPSTONE GROUP INC-CLASS A
+  market_cap: null
+  pre_market_chg: +6.30%
+  pre_market_volume: 16.68K
+  pre_market_price: 46.38
+  atr: 5.80%
+  price: 43.63
+- symbol: HNGE
+  company_name: HINGE HEALTH INC-A
+  market_cap: null
+  pre_market_chg: +6.14%
+  pre_market_volume: 20.99K
+  pre_market_price: 62.26
+  atr: 4.47%
+  price: 58.66
+- symbol: AVAV
+  company_name: AEROVIRONMENT INC
+  market_cap: null
+  pre_market_chg: +6.02%
+  pre_market_volume: 10.19K
+  pre_market_price: 203.0
+  atr: 5.65%
+  price: 191.47
+- symbol: M
+  company_name: MACYS INC
+  market_cap: null
+  pre_market_chg: +5.87%
+  pre_market_volume: 129.99K
+  pre_market_price: 23.08
+  atr: 4.02%
+  price: 21.8
+- symbol: UPST
+  company_name: UPSTART HOLDINGS INC
+  market_cap: null
+  pre_market_chg: +5.71%
+  pre_market_volume: 42.12K
+  pre_market_price: 32.02
+  atr: 6.06%
+  price: 30.29
+- symbol: SNAP
+  company_name: SNAP INC - A
+  market_cap: null
+  pre_market_chg: +5.58%
+  pre_market_volume: 601.72K
+  pre_market_price: 6.05
+  atr: 4.98%
+  price: 5.73
+- symbol: BLSH
+  company_name: BULLISH
+  market_cap: null
+  pre_market_chg: +5.52%
+  pre_market_volume: 22.76K
+  pre_market_price: 29.65
+  atr: 8.67%
+  price: 28.1
+- symbol: OWL
+  company_name: BLUE OWL CAPITAL INC
+  market_cap: null
+  pre_market_chg: +5.16%
+  pre_market_volume: 438.72K
+  pre_market_price: 10.19
+  atr: 4.60%
+  price: 9.69
+- symbol: NCLH
+  company_name: NORWEGIAN CRUISE LINE HOLDIN
+  market_cap: null
+  pre_market_chg: +5.07%
+  pre_market_volume: 268.49K
+  pre_market_price: 19.07
+  atr: 4.34%
+  price: 18.15
+- symbol: VG
+  company_name: VENTURE GLOBAL INC-CL A
+  market_cap: null
+  pre_market_chg: +4.87%
+  pre_market_volume: 111.23K
+  pre_market_price: 13.13
+  atr: 6.52%
+  price: 12.52
+- symbol: DSGX
+  company_name: DESCARTES SYSTEMS GRP/THE
+  market_cap: null
+  pre_market_chg: +4.72%
+  pre_market_volume: 14.78K
+  pre_market_price: 77.61
+  atr: 4.20%
+  price: 74.11
+- symbol: BW
+  company_name: BABCOCK & WILCOX ENTERPR
+  market_cap: null
+  pre_market_chg: +4.64%
+  pre_market_volume: 26.66K
+  pre_market_price: 18.5
+  atr: 10.49%
+  price: 17.68
+- symbol: BMNR
+  company_name: BITMINE IMMERSION TECHNOLOGI
+  market_cap: null
+  pre_market_chg: +4.62%
+  pre_market_volume: 503.56K
+  pre_market_price: 17.68
+  atr: 6.92%
+  price: 16.9
+- symbol: VECO
+  company_name: VEECO INSTRUMENTS INC
+  market_cap: null
+  pre_market_chg: +4.40%
+  pre_market_volume: 24.50K
+  pre_market_price: 63.12
+  atr: 5.69%
+  price: 60.46
+- symbol: CVNA
+  company_name: CARVANA CO
+  market_cap: null
+  pre_market_chg: +4.19%
+  pre_market_volume: 167.91K
+  pre_market_price: 66.32
+  atr: 6.08%
+  price: 63.65
+- symbol: DOCN
+  company_name: DIGITALOCEAN HOLDINGS INC
+  market_cap: null
+  pre_market_chg: +4.04%
+  pre_market_volume: 33.18K
+  pre_market_price: 180.7
+  atr: 6.82%
+  price: 173.68
+- symbol: PINS
+  company_name: PINTEREST INC- CLASS A
+  market_cap: null
+  pre_market_chg: +4.02%
+  pre_market_volume: 275.25K
+  pre_market_price: 21.5
+  atr: 4.75%
+  price: 20.67
+- symbol: NU
+  company_name: NU HOLDINGS LTD/CAYMAN ISL-A
+  market_cap: null
+  pre_market_chg: +3.95%
+  pre_market_volume: 691.64K
+  pre_market_price: 12.1
+  atr: 4.62%
+  price: 11.64
+- symbol: TWLO
+  company_name: TWILIO INC - A
+  market_cap: null
+  pre_market_chg: +3.85%
+  pre_market_volume: 39.26K
+  pre_market_price: 236.02
+  atr: 4.83%
+  price: 227.26
+- symbol: NTNX
+  company_name: NUTANIX INC - A
+  market_cap: null
+  pre_market_chg: +3.70%
+  pre_market_volume: 46.95K
+  pre_market_price: 55.0
+  atr: 4.57%
+  price: 53.04
+- symbol: AFRM
+  company_name: AFFIRM HOLDINGS INC
+  market_cap: null
+  pre_market_chg: +3.37%
+  pre_market_volume: 46.98K
+  pre_market_price: 68.5
+  atr: 5.85%
+  price: 66.27
+- symbol: SGI
+  company_name: SOMNIGROUP INTERNATIONAL INC
+  market_cap: null
+  pre_market_chg: +3.29%
+  pre_market_volume: 31.09K
+  pre_market_price: 69.63
+  atr: 4.05%
+  price: 67.41
+- symbol: SMTC
+  company_name: SEMTECH CORP
+  market_cap: null
+  pre_market_chg: +1.72%
+  pre_market_volume: 26.95K
+  pre_market_price: 166.32
+  atr: 7.78%
+  price: 163.5

@@ -1,0 +1,49 @@
+stocks:
+- symbol: SPY
+  company_name: SS SPDR S&P 500 ETF TRUST-US
+  market_cap: null
+  pre_market_chg: -0.20%
+  pre_market_volume: 439.90K
+  pre_market_price: 737.73
+  atr: 1.08%
+  price: 739.22
+- symbol: QQQ
+  company_name: INVESCO QQQ TRUST SERIES 1
+  market_cap: null
+  pre_market_chg: -0.75%
+  pre_market_volume: 500.90K
+  pre_market_price: 710.7
+  atr: 1.81%
+  price: 716.07
+- symbol: MSFT
+  company_name: MICROSOFT CORP
+  market_cap: 3058.58B
+  pre_market_chg: -0.96%
+  pre_market_volume: 223.11K
+  pre_market_price: 407.79
+  atr: 3.02%
+  price: 411.74
+- symbol: NVDA
+  company_name: NVIDIA CORP
+  market_cap: 5049.09B
+  pre_market_chg: -1.17%
+  pre_market_volume: 469.52K
+  pre_market_price: 206.19
+  atr: 4.13%
+  price: 208.64
+- symbol: TSLA
+  company_name: TESLA INC
+  market_cap: 1535.90B
+  pre_market_chg: -1.66%
+  pre_market_volume: 434.25K
+  pre_market_price: 402.15
+  atr: 4.07%
+  price: 408.95
+- symbol: AAPL
+  company_name: APPLE INC
+  market_cap: 4428.83B
+  pre_market_chg: -2.81%
+  pre_market_volume: 529.44K
+  pre_market_price: 293.07
+  atr: 2.33%
+  price: 301.54

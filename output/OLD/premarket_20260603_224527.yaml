@@ -1,0 +1,161 @@
+stocks:
+- symbol: ABVX
+  company_name: ABIVAX SA-ADR
+  market_cap: null
+  pre_market_chg: +23.92%
+  pre_market_volume: 66.22K
+  pre_market_price: 89.84
+  atr: 10.2
+  price: 72.5
+- symbol: SNDK
+  company_name: SANDISK CORP
+  market_cap: null
+  pre_market_chg: +7.85%
+  pre_market_volume: 248.91K
+  pre_market_price: 1851.01
+  atr: 121.98
+  price: 1716.36
+- symbol: NBIX
+  company_name: NEUROCRINE BIOSCIENCES INC
+  market_cap: null
+  pre_market_chg: +6.48%
+  pre_market_volume: 12.28K
+  pre_market_price: 164.87
+  atr: 4.82
+  price: 154.84
+- symbol: SOXL
+  company_name: DIREX DAIL SEMI BU 3X ET-USD
+  market_cap: null
+  pre_market_chg: +6.06%
+  pre_market_volume: 429.12K
+  pre_market_price: 282.46
+  atr: 25.06
+  price: 266.32
+- symbol: WDC
+  company_name: WESTERN DIGITAL CORP
+  market_cap: null
+  pre_market_chg: +5.79%
+  pre_market_volume: 143.39K
+  pre_market_price: 595.73
+  atr: 31.05
+  price: 563.1
+- symbol: ILMN
+  company_name: ILLUMINA INC
+  market_cap: null
+  pre_market_chg: +5.16%
+  pre_market_volume: 21.77K
+  pre_market_price: 170.93
+  atr: 6.06
+  price: 162.55
+- symbol: TTMI
+  company_name: TTM TECHNOLOGIES
+  market_cap: null
+  pre_market_chg: +4.74%
+  pre_market_volume: 20.05K
+  pre_market_price: 188.13
+  atr: 13.2
+  price: 179.62
+- symbol: FPS
+  company_name: FORGENT POWER SOLUTIONS INC
+  market_cap: null
+  pre_market_chg: +4.64%
+  pre_market_volume: 43.48K
+  pre_market_price: 59.52
+  atr: 4.01
+  price: 56.88
+- symbol: QCOM
+  company_name: QUALCOMM INC
+  market_cap: null
+  pre_market_chg: +4.58%
+  pre_market_volume: 154.74K
+  pre_market_price: 251.88
+  atr: 20.63
+  price: 240.84
+- symbol: LPLA
+  company_name: LPL FINANCIAL HOLDINGS INC
+  market_cap: null
+  pre_market_chg: +4.49%
+  pre_market_volume: 34.97K
+  pre_market_price: 284.75
+  atr: 13.19
+  price: 272.52
+- symbol: SYRE
+  company_name: SPYRE THERAPEUTICS INC
+  market_cap: null
+  pre_market_chg: +4.44%
+  pre_market_volume: 13.77K
+  pre_market_price: 72.23
+  atr: 4.09
+  price: 69.16
+- symbol: INTC
+  company_name: INTEL CORP
+  market_cap: null
+  pre_market_chg: +4.25%
+  pre_market_volume: 1.03M
+  pre_market_price: 112.52
+  atr: 9.47
+  price: 107.93
+- symbol: TER
+  company_name: TERADYNE INC
+  market_cap: null
+  pre_market_chg: +4.23%
+  pre_market_volume: 50.52K
+  pre_market_price: 409.23
+  atr: 21.95
+  price: 392.62
+- symbol: MUU
+  company_name: DIREXION DAILY MU BULL 2X ET
+  market_cap: null
+  pre_market_chg: +4.16%
+  pre_market_volume: 22.42K
+  pre_market_price: 1076.17
+  atr: 99.13
+  price: 1033.17
+- symbol: META
+  company_name: META PLATFORMS INC-CLASS A
+  market_cap: null
+  pre_market_chg: +4.16%
+  pre_market_volume: 404.49K
+  pre_market_price: 622.49
+  atr: 15.51
+  price: 597.63
+- symbol: 'ON'
+  company_name: ON SEMICONDUCTOR
+  market_cap: null
+  pre_market_chg: +4.13%
+  pre_market_volume: 63.30K
+  pre_market_price: 133.95
+  atr: 7.15
+  price: 128.64
+- symbol: AMD
+  company_name: ADVANCED MICRO DEVICES
+  market_cap: null
+  pre_market_chg: +4.06%
+  pre_market_volume: 245.00K
+  pre_market_price: 542.71
+  atr: 27.83
+  price: 521.54
+- symbol: MXL
+  company_name: MAXLINEAR INC
+  market_cap: null
+  pre_market_chg: +3.75%
+  pre_market_volume: 49.07K
+  pre_market_price: 92.09
+  atr: 11.98
+  price: 88.76
+- symbol: SEI
+  company_name: SOLARIS ENERGY INFRASTRUCTUR
+  market_cap: null
+  pre_market_chg: +3.71%
+  pre_market_volume: 11.82K
+  pre_market_price: 74.59
+  atr: 4.47
+  price: 71.92
+- symbol: MRVL
+  company_name: MARVELL TECHNOLOGY INC
+  market_cap: null
+  pre_market_chg: +3.62%
+  pre_market_volume: 991.65K
+  pre_market_price: 301.33
+  atr: 20.2
+  price: 290.79

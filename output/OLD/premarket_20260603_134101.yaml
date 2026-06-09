@@ -1,0 +1,25 @@
+stocks:
+- symbol: MRVL
+  company_name: MARVELL TECHNOLOGY INC
+  market_cap: null
+  pre_market_chg: +11.08%
+  pre_market_volume: 60.59K
+  pre_market_price: 323.0
+  atr: 19.05
+  price: 290.79
+- symbol: INTC
+  company_name: INTEL CORP
+  market_cap: null
+  pre_market_chg: +7.11%
+  pre_market_volume: 57.47K
+  pre_market_price: 115.6
+  atr: 9.25
+  price: 107.93
+- symbol: SOXL
+  company_name: DIREX DAIL SEMI BU 3X ET-USD
+  market_cap: null
+  pre_market_chg: +5.48%
+  pre_market_volume: 29.42K
+  pre_market_price: 280.92
+  atr: 24.84
+  price: 266.32

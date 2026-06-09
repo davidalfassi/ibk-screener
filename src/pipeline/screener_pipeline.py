@@ -59,7 +59,8 @@ async def run_screener_pipeline(
             atr_map[sym] = calculate_atr(bars)
 
         surviving_symbols = filter_symbols_by_atr(
-            list(contract_infos.keys()), atr_map, screener_config.atr_min
+            list(contract_infos.keys()), atr_map, screener_config.atr_min,
+            bars_map=bars_map,
         )
         surviving_contracts = [
             contract_infos[s].contract for s in surviving_symbols if s in contract_infos
@@ -72,12 +73,19 @@ async def run_screener_pipeline(
         # Step 5: fetch pre-market snapshots (price, volume, change%, market cap from tick 258)
         snapshots = await fetch_market_snapshots(ib, surviving_contracts, app_config.pacing)
 
-        # Step 6: assemble StockRecord list
+        # Step 6: assemble StockRecord list (reuse pre-computed atr_map — no second calculation)
         surviving_infos = {s: contract_infos[s] for s in surviving_symbols if s in contract_infos}
-        records = build_records(surviving_infos, snapshots, bars_map)
+        records = build_records(surviving_infos, snapshots, bars_map, atr_map=atr_map)
 
         # Step 7: apply remaining client-side filters (sector, price_min)
         records = apply_screener_filters(records, screener_config)
+
+        log.info(
+            "Pipeline summary: %d scanner → %d contracts → %d historical → %d ATR pass"
+            " → %d snapshots → %d after filters",
+            len(symbols), len(contract_infos), len(bars_map),
+            len(surviving_symbols), len(snapshots), len(records),
+        )
 
         if not records:
             log.warning("No records passed all filters")

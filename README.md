@@ -198,8 +198,10 @@ By default the app warns if run outside 4:00–9:30 AM ET on weekdays (pre-marke
 | `--config-dir PATH` | `./config` | Override config directory |
 | `--dry-run` | off | Fetch data but skip file write |
 | `--no-hours-check` | off | Skip pre-market hours validation |
-| `--log-level` | `INFO` | `DEBUG` / `INFO` / `WARNING` / `ERROR` |
+| `--log-level` | `INFO` | Console verbosity: `DEBUG` / `INFO` / `WARNING` / `ERROR` |
 | `-h, --help` | — | Show help |
+
+> **Note:** Every run always writes a full DEBUG-level log to `./logs/` regardless of `--log-level`. The console respects `--log-level`; the file captures everything including raw IB responses.
 
 ---
 
@@ -255,6 +257,7 @@ IBK-Pull-Date/
 │   ├── screener.yaml          Screener filters (Option 1)
 │   └── watchlist.yaml         Symbol list (Option 2)
 ├── output/                    Generated YAML files (auto-created)
+├── logs/                      Per-run DEBUG log files (auto-created, gitignored)
 └── src/
     ├── config/loader.py       Loads YAML config into typed dataclasses
     ├── ib/
@@ -286,3 +289,5 @@ IBK-Pull-Date/
 | All fields `null` in output | Running outside pre-market hours — use `--no-hours-check` to confirm |
 | `dacite.DaciteError` | YAML config has a type mismatch — check indentation and value types |
 | `clientId already in use` | Previous run crashed — wait 10s or change `client_id` in `settings.yaml` |
+| Expected symbol missing | Check `logs/screener_YYYYMMDD_HHMMSS.log` — search for the symbol to see exactly which pipeline stage dropped it |
+| Symbol dropped with "historical bars fetch failed" | IB transient error on `reqHistoricalData`; one retry is attempted automatically. If persistent, check IB Gateway connectivity |
