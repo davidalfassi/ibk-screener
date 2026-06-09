@@ -161,10 +161,15 @@ def main(
         screener_config = load_screener(screener_path)
         from src.pipeline.screener_pipeline import run_screener_pipeline
         path = asyncio.run(run_screener_pipeline(app_config, screener_config, dry_run=dry_run))
-    else:
+    elif mode == "watchlist":
         watchlist = load_watchlist(watchlist_path)
         from src.pipeline.watchlist_pipeline import run_watchlist_pipeline
         path = asyncio.run(run_watchlist_pipeline(app_config, watchlist, dry_run=dry_run))
+    else:  # mode == "merged"
+        screener_config = load_screener(screener_path)
+        watchlist = load_watchlist(watchlist_path)
+        from src.pipeline.merged_pipeline import run_merged_pipeline
+        path = asyncio.run(run_merged_pipeline(app_config, screener_config, watchlist, dry_run=dry_run))
 
     if not dry_run:
         click.echo(f"Output: {path}")
