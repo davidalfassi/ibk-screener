@@ -25,10 +25,10 @@ async def run_merged_pipeline(
 
     # Run both pipelines concurrently
     screener_records = await run_screener_pipeline(
-        app_config, screener_config, dry_run=True
+        app_config, screener_config, dry_run=dry_run
     )
     watchlist_records = await run_watchlist_pipeline(
-        app_config, watchlist, dry_run=True
+        app_config, watchlist, dry_run=dry_run
     )
 
     # Combine records (watchlist first, then screener)
