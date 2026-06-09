@@ -23,15 +23,39 @@ import pytz
 DEFAULT_CONFIG_DIR = Path(__file__).parent / "config"
 
 
-def _setup_logging(level: str) -> None:
-    logging.basicConfig(
-        level=getattr(logging, level),
-        format="%(asctime)s  %(levelname)-8s  %(name)s  %(message)s",
-        datefmt="%H:%M:%S",
-    )
-    # Suppress noisy ib_async internal logs unless debugging
+def _setup_logging(level: str, mode: str = "run") -> None:
+    fmt = "%(asctime)s  %(levelname)-8s  %(name)s  %(message)s"
+
+    # Console handler — respects --log-level
+    console = logging.StreamHandler()
+    console.setLevel(getattr(logging, level))
+    console.setFormatter(logging.Formatter(fmt, datefmt="%H:%M:%S"))
+
+    # File handler — always DEBUG so every IB response is captured
+    log_dir = Path("logs")
+    log_dir.mkdir(exist_ok=True)
+    ts = datetime.now().strftime("%Y%m%d_%H%M%S")
+    log_path = log_dir / f"{mode}_{ts}.log"
+    file_h = logging.FileHandler(log_path, encoding="utf-8")
+    file_h.setLevel(logging.DEBUG)
+    file_h.setFormatter(logging.Formatter(fmt, datefmt="%Y-%m-%d %H:%M:%S"))
+
+    root = logging.getLogger()
+    root.setLevel(logging.DEBUG)
+    root.addHandler(console)
+    root.addHandler(file_h)
+
+    # ib_async: suppress on console unless debugging; always captured at DEBUG in file
+    logging.getLogger("ib_async").setLevel(logging.DEBUG)
     if level != "DEBUG":
-        logging.getLogger("ib_async").setLevel(logging.WARNING)
+        class _SuppressIBAsync(logging.Filter):
+            def filter(self, record: logging.LogRecord) -> bool:
+                if record.name.startswith("ib_async"):
+                    return record.levelno >= logging.WARNING
+                return True
+        console.addFilter(_SuppressIBAsync())
+
+    logging.getLogger("main").info("Log file: %s", log_path)
 
 
 def _check_premarket_hours(tz_name: str) -> bool:
@@ -47,7 +71,7 @@ def _check_premarket_hours(tz_name: str) -> bool:
 @click.command(context_settings={"help_option_names": ["-h", "--help"]})
 @click.option(
     "--mode",
-    type=click.Choice(["screener", "watchlist"], case_sensitive=False),
+    type=click.Choice(["screener", "watchlist","merged"], case_sensitive=False),
     default=None,
     help="Run the specified pipeline immediately.",
 )
@@ -92,7 +116,8 @@ def main(
     no_hours_check: bool,
     log_level: str,
 ) -> None:
-    _setup_logging(log_level.upper())
+    log_mode = "scheduler" if use_scheduler else (mode or "run")
+    _setup_logging(log_level.upper(), mode=log_mode)
     log = logging.getLogger("main")
 
     # Load all configs upfront (fail fast on bad YAML)
