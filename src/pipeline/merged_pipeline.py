@@ -23,13 +23,64 @@ async def run_merged_pipeline(
     """Run both screener and watchlist pipelines, merge results, and write output."""
     log.info("Starting merged pipeline (screener + watchlist)...")
 
-    # Run both pipelines concurrently
-    screener_records = await run_screener_pipeline(
-        app_config, screener_config, dry_run=dry_run
-    )
-    watchlist_records = await run_watchlist_pipeline(
-        app_config, watchlist, dry_run=dry_run
-    )
+    # Import pipeline internals to get records without writing
+    from src.ib.client import IBClient
+    from src.ib.contract_details import fetch_all_contract_details
+    from src.ib.market_data import fetch_market_snapshots
+    from src.ib.historical import fetch_all_daily_bars
+    from src.processing.enrichment import build_records
+    from src.processing.filters import apply_screener_filters, filter_symbols_by_atr
+    from src.processing.atr import calculate_atr
+
+    screener_records: List[StockRecord] = []
+    watchlist_records: List[StockRecord] = []
+
+    async with IBClient(app_config.ib_gateway) as ib:
+        # Run screener pipeline
+        log.info("Running screener pipeline...")
+        from src.ib.scanner import run_scanner_batches
+        screener_symbols = await run_scanner_batches(ib, screener_config)
+        log.info("Screener found %d symbols", len(screener_symbols))
+
+        if screener_symbols:
+            contract_infos = await fetch_all_contract_details(
+                ib, screener_symbols, delay=app_config.pacing.contract_details
+            )
+            snapshots = await fetch_market_snapshots(
+                ib, list(contract_infos.values()), pacing=app_config.pacing
+            )
+            bars_map = await fetch_all_daily_bars(
+                ib, list(contract_infos.values()), pacing=app_config.pacing
+            )
+            atr_map = {
+                sym: calculate_atr(bars, screener_config.atr_period)
+                for sym, bars in bars_map.items()
+            }
+            screener_records = build_records(
+                contract_infos, snapshots, bars_map, atr_map, screener_config.atr_period
+            )
+            screener_records = apply_screener_filters(screener_records, screener_config)
+
+        # Run watchlist pipeline
+        log.info("Running watchlist pipeline...")
+        watchlist_symbols = [entry.symbol for entry in watchlist]
+        if watchlist_symbols:
+            contract_infos = await fetch_all_contract_details(
+                ib, watchlist_symbols, delay=app_config.pacing.contract_details
+            )
+            snapshots = await fetch_market_snapshots(
+                ib, list(contract_infos.values()), pacing=app_config.pacing
+            )
+            bars_map = await fetch_all_daily_bars(
+                ib, list(contract_infos.values()), pacing=app_config.pacing
+            )
+            atr_map = {
+                sym: calculate_atr(bars, 14)
+                for sym, bars in bars_map.items()
+            }
+            watchlist_records = build_records(
+                contract_infos, snapshots, bars_map, atr_map, 14
+            )
 
     # Combine records (watchlist first, then screener)
     # Deduplicate by symbol to avoid duplicates
