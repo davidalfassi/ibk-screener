@@ -12,7 +12,7 @@ ib_gateway:
 pacing:
   historical_delay_seconds: 1.2   # IB limit: max 60 historical requests/10 min (increased for stability)
   market_data_delay_seconds: 0.1  # delay between reqMktData calls
-  max_concurrent_mkt_data: 50     # IB hard limit on simultaneous subscriptions
+  max_concurrent_mkt_data: 40     # IB hard limit on simultaneous subscriptions (reduced from 50 for stability)
 
 output:
   directory: "./output"

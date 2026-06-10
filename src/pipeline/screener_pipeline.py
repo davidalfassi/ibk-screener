@@ -76,19 +76,36 @@ async def run_screener_pipeline(
         snapshots = await fetch_market_snapshots(ib, surviving_contracts, app_config.pacing)
         log.info("Market snapshots retrieved: %d / %d symbols with data", len(snapshots), len(surviving_contracts))
         
+        # Validate snapshot data quality
+        snapshots_with_price = {
+            sym: snap for sym, snap in snapshots.items()
+            if snap.pre_market_price is not None or snap.prev_close is not None
+        }
+        log.info("Snapshots with valid price data: %d / %d", len(snapshots_with_price), len(snapshots))
+        
         # Debug: log which symbols failed to get snapshots
         missing_snapshots = set(surviving_symbols) - set(snapshots.keys())
         if missing_snapshots:
             log.warning("Missing snapshots for %d symbols: %s", len(missing_snapshots), sorted(missing_snapshots))
+        
+        # Warn about snapshots with no price data
+        no_price_snapshots = set(snapshots.keys()) - set(snapshots_with_price.keys())
+        if no_price_snapshots:
+            log.warning("Snapshots with no price data for %d symbols: %s", len(no_price_snapshots), sorted(no_price_snapshots))
 
         # Step 6: assemble StockRecord list
-        # Only include symbols that have snapshot data to avoid None values in filtered fields
+        # Only include symbols that have snapshot data AND valid price data
         surviving_infos = {
             s: contract_infos[s]
             for s in surviving_symbols
-            if s in contract_infos and s in snapshots
+            if s in contract_infos and s in snapshots_with_price
         }
-        log.info("Symbols with both contract_infos AND snapshots: %d", len(surviving_infos))
+        log.info("Symbols with contract_infos AND valid price snapshots: %d / %d", 
+                 len(surviving_infos), len(surviving_symbols))
+        
+        if not surviving_infos:
+            log.error("No symbols have valid price data in snapshots — check IB connection and market data subscriptions")
+            return _empty_output(app_config, dry_run)
         
         # Recalculate atr_map for only the surviving symbols with snapshot data
         atr_map_filtered: dict[str, float | None] = {}

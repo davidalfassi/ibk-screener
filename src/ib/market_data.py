@@ -70,8 +70,9 @@ async def fetch_market_snapshots(
 
     results: Dict[str, MarketSnapshot] = {}
 
-    for batch_start in range(0, len(contracts), pacing.max_concurrent_mkt_data):
+    for batch_num, batch_start in enumerate(range(0, len(contracts), pacing.max_concurrent_mkt_data), 1):
         batch = contracts[batch_start: batch_start + pacing.max_concurrent_mkt_data]
+        log.info("Market data batch %d: fetching %d symbols...", batch_num, len(batch))
 
         # Phase 1: open streaming subscriptions for the whole batch (non-blocking)
         tickers = {}
@@ -86,31 +87,40 @@ async def fetch_market_snapshots(
             await asyncio.sleep(pacing.market_data_delay_seconds)
 
         # Phase 2: wait for all ticks to arrive
-        log.debug("Waiting %ss for market data ticks (batch of %d)...", _STREAM_WAIT, len(batch))
+        log.debug("Waiting %ss for market data ticks (batch %d of %d)...", _STREAM_WAIT, batch_num, 
+                  (len(contracts) + pacing.max_concurrent_mkt_data - 1) // pacing.max_concurrent_mkt_data)
         await asyncio.sleep(_STREAM_WAIT)
 
         # Phase 3: read and immediately cancel every subscription
+        batch_results = 0
         for symbol, (ticker, contract) in tickers.items():
             snapshot = _extract_snapshot(symbol, ticker)
             results[symbol] = snapshot
             ib.cancelMktData(contract)
-            log.debug(
-                "%s: last=%.2f  close=%.2f  vol=%s  mktcap=%s  chg=%s%%",
-                symbol,
-                snapshot.pre_market_price or 0.0,
-                snapshot.prev_close or 0.0,
-                f"{snapshot.pre_market_volume:.0f}" if snapshot.pre_market_volume is not None else "n/a",
-                f"{snapshot.market_cap_usd / 1e9:.2f}B" if snapshot.market_cap_usd else "n/a",
-                f"{snapshot.pre_market_chg_pct:.2f}" if snapshot.pre_market_chg_pct is not None else "n/a",
-            )
+            
+            # Log only if we got meaningful data
+            if snapshot.pre_market_price is not None or snapshot.prev_close is not None:
+                batch_results += 1
+                log.debug(
+                    "%s: last=%.2f  close=%.2f  vol=%s  mktcap=%s  chg=%s%%",
+                    symbol,
+                    snapshot.pre_market_price or 0.0,
+                    snapshot.prev_close or 0.0,
+                    f"{snapshot.pre_market_volume:.0f}" if snapshot.pre_market_volume is not None else "n/a",
+                    f"{snapshot.market_cap_usd / 1e9:.2f}B" if snapshot.market_cap_usd else "n/a",
+                    f"{snapshot.pre_market_chg_pct:.2f}" if snapshot.pre_market_chg_pct is not None else "n/a",
+                )
+            else:
+                log.warning("%s: no market data received (price and close both None)", symbol)
         
-        log.info("Batch %d: fetched %d market snapshots", 
-                 (batch_start // pacing.max_concurrent_mkt_data) + 1, len(tickers))
+        log.info("Batch %d: got data for %d / %d symbols", batch_num, batch_results, len(tickers))
 
         # Wait for all cancellations to process before moving to next batch
         # IB needs time to fully release market data subscriptions and clean up resources
-        log.debug("Waiting for market data subscription cancellations to process...")
-        await asyncio.sleep(2.0)
+        # Increased from 2s to 3s to ensure reliable cleanup
+        if batch_num < (len(contracts) + pacing.max_concurrent_mkt_data - 1) // pacing.max_concurrent_mkt_data:
+            log.debug("Waiting 3s for market data subscription cancellations to process...")
+            await asyncio.sleep(3.0)
 
     log.info("Fetched market snapshots for %d / %d symbols", len(results), len(contracts))
     return results
