@@ -11,7 +11,7 @@ screener:
   avg_volume_min: 1000000         # 1M shares minimum 10-day average volume
 
   # ── Client-side filters (applied after data is fetched from IB) ──
-  atr_min: 4.0                   # minimum ATR(14) in dollars
+  atr_min: 4.0                   # minimum ATR(14) as a percentage (e.g., 4.0 = 4%)
   price_min: 2.0                 # minimum stock price (filters penny stocks)
   pre_market_vol_min: 1200       # minimum pre-market shares traded
   exclude_sectors:

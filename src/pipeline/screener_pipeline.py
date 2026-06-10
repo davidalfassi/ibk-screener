@@ -56,7 +56,7 @@ async def run_screener_pipeline(
         atr_map: dict[str, float | None] = {}
         from src.processing.atr import calculate_atr
         for sym, bars in bars_map.items():
-            atr_map[sym] = calculate_atr(bars)
+            atr_map[sym] = calculate_atr(bars, screener_config.atr_period)
 
         surviving_symbols = filter_symbols_by_atr(
             list(contract_infos.keys()), atr_map, screener_config.atr_min,
@@ -101,7 +101,7 @@ async def run_screener_pipeline(
         atr_map_filtered: dict[str, float | None] = {}
         for sym in surviving_infos.keys():
             bars = bars_map.get(sym)
-            atr_map_filtered[sym] = calculate_atr(bars) if bars else None
+            atr_map_filtered[sym] = calculate_atr(bars, screener_config.atr_period) if bars else None
         
         records = build_records(surviving_infos, snapshots, bars_map, atr_map=atr_map_filtered)
         log.info("Built %d records from %d surviving symbols", len(records), len(surviving_symbols))
