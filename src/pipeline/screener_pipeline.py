@@ -55,8 +55,9 @@ async def run_screener_pipeline(
         # Step 4: calculate ATR and pre-filter symbols below the threshold
         atr_map: dict[str, float | None] = {}
         from src.processing.atr import calculate_atr
-        for sym, bars in bars_map.items():
-            atr_map[sym] = calculate_atr(bars, screener_config.atr_period)
+        for sym in contract_infos.keys():
+            bars = bars_map.get(sym)
+            atr_map[sym] = calculate_atr(bars, screener_config.atr_period) if bars else None
 
         surviving_symbols = filter_symbols_by_atr(
             list(contract_infos.keys()), atr_map, screener_config.atr_min,
