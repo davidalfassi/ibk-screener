@@ -5,7 +5,7 @@ ib_gateway:
   #   4001 = IB Gateway live trading
   #   7497 = TWS paper trading
   #   7496 = TWS live trading
-  port: 7497 #7497 #realtime = 7496 #4002  
+  port: 7496 #7497 #7497 #realtime = 7496 #4002  
   client_id: 1
   timeout: 30  # seconds to wait for connection
 
@@ -32,4 +32,3 @@ scheduler:
     timezone: "America/New_York"
 
 max_number_of_stocks: 59          # top N stocks by pre_market_chg_pct emitted to output
-python.terminal.useEnvFile: true

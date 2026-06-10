@@ -24,6 +24,7 @@ class IBGatewayConfig:
 @dataclass
 class PacingConfig:
     historical_delay_seconds: float = 0.6
+    contract_details_delay_seconds: float = 0.1
     market_data_delay_seconds: float = 0.1
     max_concurrent_mkt_data: int = 50
 
@@ -80,6 +81,8 @@ class ScreenerConfig:
     market_cap_min_usd: Optional[float] = None
     market_cap_max_usd: Optional[float] = None
     avg_volume_min: Optional[int] = None
+    exclude_etfs: bool = True
+    atr_period: int = 14
     atr_min: Optional[float] = None
     price_min: Optional[float] = None
     pre_market_vol_min: Optional[float] = None

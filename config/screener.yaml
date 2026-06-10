@@ -11,6 +11,7 @@ screener:
   avg_volume_min: 1000000         # 1M shares minimum 10-day average volume
 
   # ── Client-side filters (applied after data is fetched from IB) ──
+  exclude_etfs: true             # drop ETFs/ETNs from results (stockType check via IB ContractDetails)
   atr_min: 4.0                   # minimum ATR(14) as a percentage (e.g., 4.0 = 4%)
   price_min: 2.0                 # minimum stock price (filters penny stocks)
   pre_market_vol_min: 1200       # minimum pre-market shares traded
@@ -25,7 +26,9 @@ screener:
   # Each batch runs one IB scanner call and inherits all params above.
   # Results are combined, deduplicated, enriched, then sorted by pre_market_chg_pct.
   scan_batches:
-    - market_cap_min_usd: 2000000000     # $2B – $10B  (small/mid cap)
+    - market_cap_min_usd: 2000000000     # $2B – $10B   (small/mid cap)
       market_cap_max_usd: 10000000000
-    - market_cap_min_usd: 10000000000    # $10B – $50B (large cap)
+    - market_cap_min_usd: 10000000000    # $10B – $50B  (large cap)
       market_cap_max_usd: 50000000000
+    - market_cap_min_usd: 50000000000    # $50B+        (mega cap: NVDA, AAPL, TSLA, META…)
+      market_cap_max_usd: null

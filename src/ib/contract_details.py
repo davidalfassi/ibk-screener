@@ -57,6 +57,7 @@ class ContractInfo:
     sector: str
     primary_exchange: str
     contract: Contract  # fully qualified contract for subsequent IB calls
+    stock_type: str = ""  # IB stockType field: "COMMON", "ETF", "ADR", "REIT", etc.
 
 
 async def fetch_contract_details(
@@ -82,17 +83,19 @@ async def fetch_contract_details(
         log.debug("%s matched %d contracts, using first result", symbol, len(details_list))
 
     detail = details_list[0]
-    
+
     # Map IB's detailed category to broader sector name
     category = detail.category or ""
     sector = _map_category_to_sector(category)
-    
+    stock_type = getattr(detail, "stockType", "") or ""
+
     log.info(
-        "%s → %s | sector=%s | exchange=%s",
+        "%s → %s | sector=%s | exchange=%s | stockType=%s",
         symbol,
         detail.longName or symbol,
         sector or "(unknown)",
         detail.contract.primaryExchange or "SMART",
+        stock_type or "(unknown)",
     )
 
     return ContractInfo(
@@ -101,6 +104,7 @@ async def fetch_contract_details(
         sector=sector,
         primary_exchange=detail.contract.primaryExchange or exchange,
         contract=detail.contract,
+        stock_type=stock_type,
     )
 
 

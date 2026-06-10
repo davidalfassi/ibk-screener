@@ -99,7 +99,8 @@ screener:
   avg_volume_min: 1000000         # 1M shares average daily volume
 
   # Client-side filters (applied after data is fetched)
-  atr_min: 4.0                   # ATR(14) minimum in dollars
+  exclude_etfs: true             # drop ETFs/ETNs (checked via IB stockType field)
+  atr_min: 4.0                   # ATR(14) minimum as a percentage (e.g. 4.0 = 4%)
   price_min: 2.0                 # minimum stock price
   pre_market_vol_min: 1200       # minimum pre-market shares traded
   exclude_sectors:
@@ -111,11 +112,11 @@ screener:
   # Each batch runs one IB scanner call (up to 50 rows). Results are combined,
   # deduplicated, enriched, and sorted by pre_market_chg_pct (highest first).
   scan_batches:
-    - market_cap_min_usd: 2000000000    # $2B – $10B
+    - market_cap_min_usd: 2000000000    # $2B – $10B   (small/mid cap)
       market_cap_max_usd: 10000000000
-    - market_cap_min_usd: 10000000000   # $10B – $50B
+    - market_cap_min_usd: 10000000000   # $10B – $50B  (large cap)
       market_cap_max_usd: 50000000000
-    - market_cap_min_usd: 50000000000   # $50B+
+    - market_cap_min_usd: 50000000000   # $50B+        (mega cap: NVDA, AAPL, TSLA, META…)
       market_cap_max_usd: null
 ```
 
@@ -286,6 +287,7 @@ IBK-Pull-Date/
 | `ConnectionRefusedError` | IB Gateway not running, or wrong port in `settings.yaml` |
 | `TimeoutError` on connect | IB Gateway running but API not enabled — check Configure → API → Settings |
 | Scanner returns 0 symbols | Filters too strict, or `scan_code` not valid for current market hours |
+| Only ETFs in output | ETFs appear in `STK.US.MAJOR` scans — set `exclude_etfs: true` in `screener.yaml` (default) |
 | All fields `null` in output | Running outside pre-market hours — use `--no-hours-check` to confirm |
 | `dacite.DaciteError` | YAML config has a type mismatch — check indentation and value types |
 | `clientId already in use` | Previous run crashed — wait 10s or change `client_id` in `settings.yaml` |
