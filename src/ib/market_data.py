@@ -104,6 +104,9 @@ async def fetch_market_snapshots(
                 f"{snapshot.pre_market_chg_pct:.2f}" if snapshot.pre_market_chg_pct is not None else "n/a",
             )
 
+        # Wait for all cancellations to process before moving to next batch
+        await asyncio.sleep(1.0)
+
     log.info("Fetched market snapshots for %d / %d symbols", len(results), len(contracts))
     return results
 
