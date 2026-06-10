@@ -72,25 +72,14 @@ async def run_screener_pipeline(
             return _empty_output(app_config, dry_run)
 
         # Step 5: fetch pre-market snapshots (price, volume, change%, market cap from tick 258)
+        log.info("Fetching market snapshots for %d surviving symbols...", len(surviving_contracts))
         snapshots = await fetch_market_snapshots(ib, surviving_contracts, app_config.pacing)
-        log.info("Market snapshots retrieved: %d symbols with data", len(snapshots))
-        log.info("Snapshot keys: %s", sorted(snapshots.keys()))
-        log.info("Surviving symbols before snapshot filter: %s", sorted(surviving_symbols))
+        log.info("Market snapshots retrieved: %d / %d symbols with data", len(snapshots), len(surviving_contracts))
         
-        # Debug: log snapshot details for each surviving symbol
-        for sym in surviving_symbols:
-            snap = snapshots.get(sym)
-            if snap:
-                log.info(
-                    "%s snapshot: price=%.2f, vol=%.0f, mktcap=%s, chg=%.2f%%",
-                    sym,
-                    snap.prev_close or 0.0,
-                    snap.pre_market_volume or 0.0,
-                    f"{snap.market_cap_usd / 1e9:.2f}B" if snap.market_cap_usd else "None",
-                    snap.pre_market_chg_pct or 0.0,
-                )
-            else:
-                log.warning("%s: NO SNAPSHOT DATA RETRIEVED", sym)
+        # Debug: log which symbols failed to get snapshots
+        missing_snapshots = set(surviving_symbols) - set(snapshots.keys())
+        if missing_snapshots:
+            log.warning("Missing snapshots for %d symbols: %s", len(missing_snapshots), sorted(missing_snapshots))
 
         # Step 6: assemble StockRecord list
         # Only include symbols that have snapshot data to avoid None values in filtered fields
@@ -99,9 +88,7 @@ async def run_screener_pipeline(
             for s in surviving_symbols
             if s in contract_infos and s in snapshots
         }
-        log.info("Symbols with both contract_infos AND snapshots: %s", sorted(surviving_infos.keys()))
-        log.info("Symbols in surviving_symbols but NOT in snapshots: %s", 
-                 sorted(set(surviving_symbols) - set(snapshots.keys())))
+        log.info("Symbols with both contract_infos AND snapshots: %d", len(surviving_infos))
         
         # Recalculate atr_map for only the surviving symbols with snapshot data
         atr_map_filtered: dict[str, float | None] = {}
@@ -111,17 +98,6 @@ async def run_screener_pipeline(
         
         records = build_records(surviving_infos, snapshots, bars_map, atr_map=atr_map_filtered)
         log.info("Built %d records from %d surviving symbols with snapshot data", len(records), len(surviving_infos))
-        
-        # Debug: log which records have None values that might cause filter rejection
-        for rec in records:
-            if rec.price is None or rec.pre_market_volume is None:
-                log.warning(
-                    "%s: incomplete data — price=%s, vol=%s, atr=%s (may fail filters)",
-                    rec.symbol,
-                    rec.price,
-                    rec.pre_market_volume,
-                    rec.atr,
-                )
 
         # Step 7: apply remaining client-side filters (sector, price_min)
         records_before_filter = len(records)

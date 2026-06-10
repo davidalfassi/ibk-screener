@@ -94,7 +94,7 @@ async def fetch_market_snapshots(
             snapshot = _extract_snapshot(symbol, ticker)
             results[symbol] = snapshot
             ib.cancelMktData(contract)
-            log.info(
+            log.debug(
                 "%s: last=%.2f  close=%.2f  vol=%s  mktcap=%s  chg=%s%%",
                 symbol,
                 snapshot.pre_market_price or 0.0,
@@ -103,9 +103,14 @@ async def fetch_market_snapshots(
                 f"{snapshot.market_cap_usd / 1e9:.2f}B" if snapshot.market_cap_usd else "n/a",
                 f"{snapshot.pre_market_chg_pct:.2f}" if snapshot.pre_market_chg_pct is not None else "n/a",
             )
+        
+        log.info("Batch %d: fetched %d market snapshots", 
+                 (batch_start // pacing.max_concurrent_mkt_data) + 1, len(tickers))
 
         # Wait for all cancellations to process before moving to next batch
-        await asyncio.sleep(1.0)
+        # IB needs time to fully release market data subscriptions and clean up resources
+        log.debug("Waiting for market data subscription cancellations to process...")
+        await asyncio.sleep(2.0)
 
     log.info("Fetched market snapshots for %d / %d symbols", len(results), len(contracts))
     return results
