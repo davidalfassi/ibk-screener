@@ -74,12 +74,14 @@ async def run_screener_pipeline(
         # Step 5: fetch pre-market snapshots (price, volume, change%, market cap from tick 258)
         snapshots = await fetch_market_snapshots(ib, surviving_contracts, app_config.pacing)
         log.info("Market snapshots retrieved: %d symbols with data", len(snapshots))
+        log.info("Snapshot keys: %s", sorted(snapshots.keys()))
+        log.info("Surviving symbols before snapshot filter: %s", sorted(surviving_symbols))
         
         # Debug: log snapshot details for each surviving symbol
         for sym in surviving_symbols:
             snap = snapshots.get(sym)
             if snap:
-                log.debug(
+                log.info(
                     "%s snapshot: price=%.2f, vol=%.0f, mktcap=%s, chg=%.2f%%",
                     sym,
                     snap.prev_close or 0.0,
@@ -97,6 +99,9 @@ async def run_screener_pipeline(
             for s in surviving_symbols
             if s in contract_infos and s in snapshots
         }
+        log.info("Symbols with both contract_infos AND snapshots: %s", sorted(surviving_infos.keys()))
+        log.info("Symbols in surviving_symbols but NOT in snapshots: %s", 
+                 sorted(set(surviving_symbols) - set(snapshots.keys())))
         
         # Recalculate atr_map for only the surviving symbols with snapshot data
         atr_map_filtered: dict[str, float | None] = {}
@@ -105,7 +110,7 @@ async def run_screener_pipeline(
             atr_map_filtered[sym] = calculate_atr(bars, screener_config.atr_period) if bars else None
         
         records = build_records(surviving_infos, snapshots, bars_map, atr_map=atr_map_filtered)
-        log.info("Built %d records from %d surviving symbols", len(records), len(surviving_symbols))
+        log.info("Built %d records from %d surviving symbols with snapshot data", len(records), len(surviving_infos))
         
         # Debug: log which records have None values that might cause filter rejection
         for rec in records:
