@@ -140,61 +140,28 @@ def _extract_snapshot(symbol: str, ticker) -> MarketSnapshot:
 
     market_cap: Optional[float] = None
     
-    # Try to get market cap from fundamentalRatios (tick 258)
+    # Try to extract market cap from raw tick data (tick type 258 = fundamental ratios)
+    # IB sends tick 258 with market cap in the value field as a string
     try:
-        fr = getattr(ticker, 'fundamentalRatios', None)
-        
-        if fr is not None:
-            # Try different possible attribute names for market cap
-            mkt_cap_val = None
-            for attr_name in ['mktCap', 'marketCap', 'market_cap', 'MKTCAP', 'MarketCap']:
-                if hasattr(fr, attr_name):
-                    mkt_cap_val = getattr(fr, attr_name)
-                    log.debug("%s: found %s=%s", symbol, attr_name, mkt_cap_val)
-                    break
-            
-            if mkt_cap_val is not None:
-                safe_val = _safe(mkt_cap_val)
-                if safe_val is not None and safe_val > 0:
-                    # Market cap from fundamentalRatios is typically in millions
-                    market_cap = safe_val * 1_000_000
-                    log.info("%s: extracted market_cap=%s from fundamentalRatios.%s", symbol, market_cap, attr_name)
-        
-        # Also try to get market cap directly from ticker attributes
-        if market_cap is None:
-            for attr_name in ['marketCap', 'mktCap', 'market_cap', 'MarketCap']:
-                if hasattr(ticker, attr_name):
-                    direct_val = getattr(ticker, attr_name)
-                    safe_val = _safe(direct_val)
-                    if safe_val is not None and safe_val > 0:
-                        market_cap = safe_val
-                        log.info("%s: extracted market_cap=%s from ticker.%s", symbol, market_cap, attr_name)
-                        break
-        
-        # Try to extract from ticker.ticks (raw tick data) - only check first few ticks
-        if market_cap is None and hasattr(ticker, 'ticks'):
-            # Limit to first 20 ticks to avoid performance issues
-            ticks_to_check = ticker.ticks[:20] if hasattr(ticker.ticks, '__getitem__') else list(ticker.ticks)[:20]
-            for tick in ticks_to_check:
-                if hasattr(tick, 'tickType') and tick.tickType == 258:  # Fundamental ratios tick
-                    log.debug("%s: found tick 258 (fundamental ratios)", symbol)
-                    # The value might be in tick.value or tick.price
-                    for val_attr in ['value', 'price', 'size']:
-                        if hasattr(tick, val_attr):
-                            tick_val = getattr(tick, val_attr)
-                            safe_val = _safe(tick_val)
-                            if safe_val is not None and safe_val > 0:
-                                market_cap = safe_val * 1_000_000  # Assume millions
-                                log.info("%s: extracted market_cap=%s from tick.%s", symbol, market_cap, val_attr)
+        if hasattr(ticker, 'ticks') and ticker.ticks:
+            for tick in ticker.ticks:
+                # Tick 258 contains fundamental ratios including market cap
+                if hasattr(tick, 'tickType') and tick.tickType == 258:
+                    # Market cap is in the 'value' field as a string (e.g., "1.23456e+10")
+                    if hasattr(tick, 'value') and tick.value:
+                        try:
+                            mkt_cap_val = float(tick.value)
+                            if mkt_cap_val > 0:
+                                market_cap = mkt_cap_val
+                                log.info("%s: extracted market_cap=%.2e from tick 258", symbol, market_cap)
                                 break
-                    if market_cap:
-                        break
-                        
+                        except (ValueError, TypeError) as e:
+                            log.debug("%s: could not parse tick 258 value '%s': %s", symbol, tick.value, e)
     except Exception as e:
-        log.warning("%s: error extracting market cap: %s", symbol, e)
+        log.debug("%s: error extracting market cap from ticks: %s", symbol, e)
     
     if market_cap is None:
-        log.debug("%s: market cap not found", symbol)
+        log.debug("%s: market cap not found in tick 258", symbol)
     
     volume = _safe(ticker.volume)
 
