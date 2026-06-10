@@ -89,14 +89,21 @@ async def run_screener_pipeline(
             else:
                 log.warning("%s: NO SNAPSHOT DATA RETRIEVED", sym)
 
-        # Step 6: assemble StockRecord list (reuse pre-computed atr_map — no second calculation)
+        # Step 6: assemble StockRecord list
         # Only include symbols that have snapshot data to avoid None values in filtered fields
         surviving_infos = {
             s: contract_infos[s]
             for s in surviving_symbols
             if s in contract_infos and s in snapshots
         }
-        records = build_records(surviving_infos, snapshots, bars_map, atr_map=atr_map)
+        
+        # Recalculate atr_map for only the surviving symbols with snapshot data
+        atr_map_filtered: dict[str, float | None] = {}
+        for sym in surviving_infos.keys():
+            bars = bars_map.get(sym)
+            atr_map_filtered[sym] = calculate_atr(bars) if bars else None
+        
+        records = build_records(surviving_infos, snapshots, bars_map, atr_map=atr_map_filtered)
         log.info("Built %d records from %d surviving symbols", len(records), len(surviving_symbols))
         
         # Debug: log which records have None values that might cause filter rejection
