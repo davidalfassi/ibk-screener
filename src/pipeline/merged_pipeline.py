@@ -46,11 +46,12 @@ async def run_merged_pipeline(
             contract_infos = await fetch_all_contract_details(
                 ib, screener_symbols, delay=app_config.pacing.historical_delay_seconds
             )
+            contracts = list(contract_infos.values())
             snapshots = await fetch_market_snapshots(
-                ib, list(contract_infos.values()), pacing=app_config.pacing
+                ib, [info.contract for info in contracts], pacing=app_config.pacing
             )
             bars_map = await fetch_all_daily_bars(
-                ib, list(contract_infos.values()), pacing=app_config.pacing
+                ib, [info.contract for info in contract_infos.values()], pacing=app_config.pacing
             )
             atr_map = {
                 sym: calculate_atr(bars, screener_config.atr_period)
@@ -68,11 +69,12 @@ async def run_merged_pipeline(
             contract_infos = await fetch_all_contract_details(
                 ib, watchlist_symbols, delay=app_config.pacing.historical_delay_seconds
             )
+            contracts = list(contract_infos.values())
             snapshots = await fetch_market_snapshots(
-                ib, list(contract_infos.values()), pacing=app_config.pacing
+                ib, [info.contract for info in contracts], pacing=app_config.pacing
             )
             bars_map = await fetch_all_daily_bars(
-                ib, list(contract_infos.values()), pacing=app_config.pacing
+                ib, [info.contract for info in contract_infos.values()], pacing=app_config.pacing
             )
             atr_map = {
                 sym: calculate_atr(bars, 14)

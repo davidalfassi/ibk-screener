@@ -34,7 +34,7 @@ async def run_watchlist_pipeline(
 
         # Step 1: resolve contract details
         contract_infos = await fetch_all_contract_details(
-            ib, symbols, delay=app_config.pacing.market_data_delay_seconds
+            ib, symbols, delay=app_config.pacing.historical_delay_seconds
         )
         if not contract_infos:
             log.error("Could not resolve any contract details from watchlist")
