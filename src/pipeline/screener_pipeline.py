@@ -90,7 +90,12 @@ async def run_screener_pipeline(
                 log.warning("%s: NO SNAPSHOT DATA RETRIEVED", sym)
 
         # Step 6: assemble StockRecord list (reuse pre-computed atr_map — no second calculation)
-        surviving_infos = {s: contract_infos[s] for s in surviving_symbols if s in contract_infos}
+        # Only include symbols that have snapshot data to avoid None values in filtered fields
+        surviving_infos = {
+            s: contract_infos[s]
+            for s in surviving_symbols
+            if s in contract_infos and s in snapshots
+        }
         records = build_records(surviving_infos, snapshots, bars_map, atr_map=atr_map)
         log.info("Built %d records from %d surviving symbols", len(records), len(surviving_symbols))
         
