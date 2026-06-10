@@ -42,7 +42,7 @@ async def run_screener_pipeline(
 
         # Step 2: resolve contract details (company name, sector, qualified contract)
         contract_infos = await fetch_all_contract_details(
-            ib, symbols, delay=app_config.pacing.market_data_delay_seconds
+            ib, symbols, delay=app_config.pacing.historical_delay_seconds
         )
         if not contract_infos:
             log.error("Could not resolve any contract details")

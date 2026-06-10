@@ -44,7 +44,7 @@ async def run_merged_pipeline(
 
         if screener_symbols:
             contract_infos = await fetch_all_contract_details(
-                ib, screener_symbols, delay=app_config.pacing.contract_details
+                ib, screener_symbols, delay=app_config.pacing.historical_delay_seconds
             )
             snapshots = await fetch_market_snapshots(
                 ib, list(contract_infos.values()), pacing=app_config.pacing
@@ -66,7 +66,7 @@ async def run_merged_pipeline(
         watchlist_symbols = [entry.symbol for entry in watchlist]
         if watchlist_symbols:
             contract_infos = await fetch_all_contract_details(
-                ib, watchlist_symbols, delay=app_config.pacing.contract_details
+                ib, watchlist_symbols, delay=app_config.pacing.historical_delay_seconds
             )
             snapshots = await fetch_market_snapshots(
                 ib, list(contract_infos.values()), pacing=app_config.pacing
