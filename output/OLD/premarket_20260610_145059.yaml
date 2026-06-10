@@ -1,0 +1,9 @@
+stocks:
+- symbol: CHWY
+  company_name: CHEWY INC - CLASS A
+  market_cap: null
+  pre_market_chg: +5.78%
+  pre_market_volume: 11.56K
+  pre_market_price: 21.58
+  atr: 4.73%
+  price: 20.4

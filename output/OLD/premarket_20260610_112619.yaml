@@ -1,0 +1,17 @@
+stocks:
+- symbol: SOXS
+  company_name: DIREX DAI SEMI BE 3X ETF-USD
+  market_cap: null
+  pre_market_chg: +6.58%
+  pre_market_volume: 408.13K
+  pre_market_price: 6.32
+  atr: 19.23%
+  price: 5.93
+- symbol: SQQQ
+  company_name: PROSHARES ULTRAPRO SHORT QQQ
+  market_cap: null
+  pre_market_chg: +2.46%
+  pre_market_volume: 22.20K
+  pre_market_price: 43.72
+  atr: 5.67%
+  price: 42.67

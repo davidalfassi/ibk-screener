@@ -1,9 +1,0 @@
-stocks:
-- symbol: SQQQ
-  company_name: PROSHARES ULTRAPRO SHORT QQQ
-  market_cap: null
-  pre_market_chg: +2.42%
-  pre_market_volume: 19.30K
-  pre_market_price: 38.09
-  atr: 4.82%
-  price: 37.19
